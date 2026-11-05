@@ -27,7 +27,8 @@ for (const key of Object.keys(patients)) {
   assert(!$('metrics').innerHTML.includes('NaN'));
   assert.equal(($('metrics').innerHTML.match(/class="minute-card"/g)||[]).length,6);
   assert($('metrics').innerHTML.includes('Latest daily best accepted FEV1'));
-  assert($('clinical-insights').innerHTML.includes('What changed')===false || $('clinical-insights').innerHTML.length>100);
+  assert.equal(($('clinical-insights').innerHTML.match(/class="clinical-insight"/g)||[]).length,3);
+  assert($('clinical-insights').innerHTML.includes('Selected period'));
   detail(data[0].date); assert($('detail-content').innerHTML.length>100);
  }
 }
@@ -36,8 +37,12 @@ for (const specialty of ['Pulmonology','Primary care','Nursing']) {
  assert($('specialty-lens').innerHTML.includes(specialty+' lens'));
   const expected=specialty==='Primary care'?'Daily symptoms & school impact':specialty==='Nursing'?'Controller doses marked taken by day':'Lung function over time';
   assert.equal($('focus-chart-title').textContent,expected);
+  assert.equal(($('clinical-insights').innerHTML.match(/class="clinical-insight"/g)||[]).length,3);
+  assert($('clinical-insights').innerHTML.includes('Symptoms and school impact'));
+  assert($('clinical-insights').innerHTML.includes('Accepted lung-function readings'));
+  assert($('clinical-insights').innerHTML.includes('Separate reporting streams'));
 }
-console.log('Passed: 3 patients x 3 date ranges; multiple FEV1 readings, quality selection, daily best trends, daily rows, and detail rendering.');
+console.log('Passed: 3 patients x 3 date ranges; multiple FEV1 readings, quality selection, daily best trends, specialty lenses, shared clinical insights, daily rows, and detail rendering.');
 `,context);
 const stats=vm.runInContext('oneMinuteStats',context);
 const insights=vm.runInContext('buildClinicalInsights',context);
@@ -71,3 +76,37 @@ assert(withPrior.find(x=>x.kind==='symptoms').summary.includes('percentage point
 assert(withPrior.find(x=>x.kind==='reporting').context.includes('patient-reported, not verified administration'));
 assert.equal(stats([{...noMedReport[0],readings:[{fev:4,quality:'rejected'}]}],3).latestDailyBest,null);
 console.log('Passed: stream-specific missingness, denominator handling, accepted-only FEV1 median/latest, no-prior comparisons, percentage-point reporting, and traceable evidence records.');
+
+const recentSignals=vm.runInContext('recentReviewSignals',context);
+const comparePriority=vm.runInContext('comparePatientPriority',context);
+const reviewFixture=Array.from({length:14},(_,i)=>{
+ const trackerSubmitted=i<4||i>=7&&i<11;
+ const symptoms=(i===0||i===7||i===8)?['Coughing']:[];
+ const readingValues=i<3?[2.8,2.9,3.0][i]:i>=7&&i<10?[2.5,2.4,2.6][i-7]:null;
+ return {date:`2026-06-${String(i+1).padStart(2,'0')}`,trackerSubmitted,missing:!trackerSubmitted,submissions:trackerSubmitted?1:0,symptoms,school:trackerSubmitted?0:null,feeling:trackerSubmitted?'Okay':null,zone:trackerSubmitted?'green':'unknown',medicationReported:i<6||i>=7&&i<12,doses:i<6||i>=7&&i<12?2:null,rescue:i<6||i>=7&&i<12?0:null,readings:readingValues===null?[]:[{fev:readingValues,quality:'accepted'}]};
+});
+context.auditFixture=reviewFixture;
+vm.runInContext('dataset=()=>auditFixture',context);
+const cues=recentSignals('alex');
+assert.equal(cues.trackerDays,4);
+assert.equal(cues.medicationReportDays,5);
+assert.equal(cues.deviceReadingDays,3);
+assert(cues.signals.some(x=>x.kind==='symptom'&&x.text.includes('2/4 vs 1/4')&&x.text.includes('+25 percentage points')));
+assert(cues.signals.some(x=>x.kind==='fev1'&&x.text.includes('2.50 vs 2.90 L')&&x.text.includes('3 vs 3 days')));
+assert(cues.signals.some(x=>x.kind==='gap'&&x.text==='No tracker submission on the last 3 days'));
+context.auditFixture=reviewFixture.map((day,i)=>i>=7?{...day,readings:[{fev:1.5,quality:'rejected'},{fev:1.6,quality:'conflicting'}]}:day);
+assert(!recentSignals('alex').signals.some(x=>x.kind==='fev1'),'Rejected/conflicting blows must not create an accepted FEV1 trend cue');
+assert(comparePriority({signals:[1],symptomRatePercent:.5,p:{name:'A'}},{signals:[],symptomRatePercent:1,p:{name:'B'}})<0);
+assert(comparePriority({signals:[],symptomRatePercent:.5,p:{name:'A'}},{signals:[],symptomRatePercent:.25,p:{name:'B'}})<0);
+assert(comparePriority({signals:[],symptomRatePercent:null,p:{name:'A'}},{signals:[],symptomRatePercent:0,p:{name:'B'}})>0);
+const noComparableFixture=Array.from({length:14},(_,i)=>({date:`2026-06-${String(i+1).padStart(2,'0')}`,trackerSubmitted:i>=7,missing:i<7,submissions:i>=7?1:0,symptoms:[],school:i>=7?0:null,feeling:i>=7?'Great':null,zone:i>=7?'green':'unknown',medicationReported:false,doses:null,rescue:null,readings:[]}));
+context.auditFixture=noComparableFixture;
+const noComparisons=recentSignals('alex');
+assert.equal(noComparisons.signals.length,0);
+assert.equal(noComparisons.trackerDays,7);
+assert.equal(noComparisons.deviceReadingDays,0);
+vm.runInContext('renderPatientDirectory()',context);
+assert(element('patient-roster-list').innerHTML.includes('No comparison cue'));
+assert(element('patient-roster-list').innerHTML.includes('check recent stream coverage'));
+assert(element('patient-roster-list').innerHTML.includes('device 0/7'));
+console.log('Passed: directory cues use paired 7-day denominators, accepted daily-best medians with sample counts, consecutive tracker gaps, stream coverage, and cue-count/frequency sorting.');
