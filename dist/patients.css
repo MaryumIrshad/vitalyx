@@ -47,3 +47,47 @@
 .preview-open{width:100%;color:var(--teal)}
 @media(max-width:1000px){.patient-list-layout{grid-template-columns:1fr}.constellation{min-height:340px}}
 @media(max-width:600px){.patient-list-heading{align-items:stretch;flex-direction:column}.patient-search{min-width:0}.constellation{min-height:300px}.constellation:after{width:290px;height:290px}.constellation:before{width:190px;height:190px}.constellation-avatar{width:44px;height:44px}.constellation-patient{min-width:75px}.constellation-name{font-size:10px}.constellation-meta{font-size:8px}.constellation-center{width:68px;height:68px;font-size:10px}}
+
+/* Care constellation visual refresh */
+.patient-list-page{padding-top:26px}
+.patient-list-heading{margin-bottom:26px;align-items:center}
+.patient-list-heading .eyebrow{letter-spacing:.16em;color:#4f8779;font-size:10px;font-weight:700}
+.patient-list-heading h1{font-size:30px;letter-spacing:-.04em;margin:7px 0 5px}
+.patient-list-heading p{font-size:13px}
+.patient-search{min-width:230px;font-size:10px;font-weight:600;color:#63776f}
+.patient-search input{height:42px;border-radius:11px;background:#fff;border-color:#dce8e1;box-shadow:0 4px 14px #345d4d0a;font-size:12px}
+.patient-list-layout{grid-template-columns:minmax(0,1.48fr) minmax(300px,.92fr);gap:18px;align-items:start}
+.constellation-card,.patient-roster{border:1px solid #e3eae5;border-radius:16px;padding:18px;background:#fff;box-shadow:0 9px 28px #183c2b0a}
+.card-heading h2,.roster-heading h2{font-size:14px;letter-spacing:-.02em}
+.card-heading p,.roster-caption{font-size:10px}
+.pill.teal{background:#edf5ef;color:#437867;border:1px solid #deebe2;font-size:9px}
+.constellation{min-height:405px;margin-top:14px;border:1px solid #e4eee8;border-radius:14px;background:radial-gradient(ellipse at 50% 48%,#e7f3ee 0%,#f1f7f3 30%,#f7f9f4 58%,#fbfaf5 100%)}
+.constellation:before,.constellation:after{border:1px solid #c9ddd3;box-shadow:0 0 0 1px #fff8,inset 0 0 26px #ffffff60}
+.constellation:before{width:246px;height:246px}.constellation:after{width:370px;height:370px;border-style:dashed;border-color:#c3d6cd}
+.constellation-lines line{stroke:#8eb8a7;stroke-width:.32;stroke-dasharray:.65 .8;opacity:.8}
+.constellation-center{width:76px;height:76px;background:linear-gradient(145deg,#538c7a,#276c62);box-shadow:0 0 0 9px #d9ebe1,0 8px 24px #2f716540;font-size:10px;letter-spacing:.08em}
+.constellation-patient{min-width:126px;padding:7px;border-radius:14px;transition:transform .2s,background .2s;cursor:pointer}
+.constellation-patient:hover,.constellation-patient:focus-visible,.constellation-patient.is-current{transform:translate(-50%,-50%) scale(1.035);background:#ffffffd9;outline:none;box-shadow:0 7px 22px #45695019}
+.constellation-avatar{width:58px;height:58px;margin-bottom:8px;border-width:3px;box-shadow:0 0 0 6px #e1eee6,0 5px 14px #435d4b1c;font-size:15px;color:#426e5c}
+.constellation-patient[data-patient="jordan"] .constellation-avatar{color:#547c98;box-shadow:0 0 0 6px #e3edf4,0 5px 14px #435d4b1c}
+.constellation-patient[data-patient="sam"] .constellation-avatar{color:#9d7642;box-shadow:0 0 0 6px #f4ead6,0 5px 14px #435d4b1c}
+.constellation-name{font-size:11px;letter-spacing:-.01em}.constellation-meta{font-size:9px;color:#718178}
+.patient-story{padding:15px 3px 1px}
+.story-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+.story-heading>div:first-child{display:flex;align-items:baseline;gap:8px}.story-heading strong{font-size:11px;color:#273c33}.story-heading>div:first-child span{font-size:9px;color:#829087}
+.story-legend{display:flex;gap:9px;flex-wrap:wrap}.story-legend span{display:flex;align-items:center;gap:4px;font-size:8px;color:#75837a}.story-legend i{width:6px;height:6px;border-radius:50%;display:inline-block}.legend-steady{background:#659b82}.legend-symptoms{background:#d39a56}.legend-unknown{background:#c6cfca}
+.story-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.story-day{min-width:0;display:flex;align-items:center;gap:4px;flex-wrap:wrap;padding:7px 5px;border-radius:8px;background:#f3f7f3;color:#60756a}.story-day .story-mark{width:7px;height:7px;flex:none;border-radius:50%;background:#659b82}.story-day.symptoms{background:#fbf5eb;color:#90764f}.story-day.symptoms .story-mark{background:#d39a56}.story-day.unknown{background:#f4f5f3;color:#8b9690}.story-day.unknown .story-mark{background:#c6cfca}.story-day strong{font-size:9px}.story-day small{width:100%;font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.patient-preview{margin:0 0 18px;padding:16px;border:1px solid #e3ece6;border-radius:13px;background:linear-gradient(145deg,#f2f7f3,#fbfcf9 76%);box-shadow:inset 0 1px #fff}
+.preview-top .roster-avatar{width:48px;height:48px;background:#dcece2;color:#3b735f;border:1px solid #cbded1;font-size:13px}
+.preview-top h3{font-size:15px;letter-spacing:-.025em;margin:4px 0 3px}.preview-top p{font-size:9px}.preview-top .eyebrow{font-size:8px;letter-spacing:.13em;color:#71907f}
+.preview-last{margin:13px 0;padding:10px 0;border-color:#e2eae3;font-size:9px}.preview-last strong{font-size:9px}
+.preview-stats{gap:7px}.preview-stats div{padding:10px;border:1px solid #e7ece6;border-radius:9px;box-shadow:0 2px 7px #334b3706}
+.preview-stats span{font-size:8px}.preview-stats strong{font-size:13px;color:#315a4b}
+.preview-note{font-size:8px;line-height:1.45;margin:10px 0;color:#849087}.preview-open{height:36px;border-radius:9px;font-size:10px;font-weight:600;background:#e8f2eb}
+.roster-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.roster-heading h2{margin:0 0 3px}.roster-caption{margin:0}.roster-count{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#edf4ef;color:#527965;font-size:9px;font-weight:700}
+.patient-list-item{gap:9px;padding:10px 4px;border-color:#edf0ed;border-radius:8px;transition:background .15s}.patient-list-item:hover,.patient-list-item.is-current{background:#f6f9f6}
+.patient-list-item.is-current{box-shadow:inset 2px 0 #6d9f85;padding-left:8px}
+.roster-avatar{width:34px;height:34px;font-size:10px}.roster-info strong{font-size:10px}.roster-info span{font-size:8px;margin-top:3px}.roster-days{font-size:8px}.roster-arrow{font-size:15px}
+@media(max-width:1000px){.patient-list-layout{grid-template-columns:1fr}.patient-roster{display:grid;grid-template-columns:1fr 1.1fr;gap:0 22px}.patient-preview{grid-column:2;grid-row:1 / span 2;margin:0}.roster-heading,.patient-roster>#patient-roster-list{grid-column:1}.constellation{min-height:390px}}
+@media(max-width:650px){.patient-roster{display:block}.patient-preview{margin-bottom:16px}.patient-list-heading h1{font-size:25px}.story-heading{align-items:flex-start;flex-direction:column}.story-days{gap:3px}.story-day{padding:6px 3px}.story-day small{font-size:7px}.constellation{min-height:340px}.constellation:after{width:300px;height:300px}.constellation:before{width:205px;height:205px}.constellation-patient{min-width:90px}.constellation-avatar{width:48px;height:48px}.constellation-meta{font-size:7px}}
