@@ -1,17 +1,18 @@
 .minute-summary{font-family:'DM Sans',sans-serif;color:#32333e;background:#fff;padding:0 0 16px}
-.minute-heading{display:flex;align-items:center;gap:9px;margin:0 0 16px;font-family:Manrope,sans-serif;font-size:clamp(23px,2.1vw,30px);font-weight:700;line-height:1.25;letter-spacing:0}
+.minute-heading{display:flex;align-items:center;gap:9px;margin:0 0 12px;font-family:Manrope,sans-serif;font-size:20px;font-weight:700;line-height:1.3;letter-spacing:0}
 .minute-anchor{display:inline-flex;color:#92949a}
 .minute-anchor svg{height:19px;width:19px;stroke:currentColor;stroke-width:2.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .minute-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;padding-bottom:6px}
-.minute-card{min-width:0;min-height:190px;padding:13px 12px;background:#fff;border:1px solid #e1e5e9;border-radius:12px;font-family:'DM Sans',sans-serif}
-.minute-label{display:flex;align-items:flex-start;justify-content:space-between;gap:5px;min-height:42px;font-size:clamp(12px,1vw,15px);font-weight:400;line-height:1.32;letter-spacing:0;color:#32333e}
+.minute-card{min-width:0;min-height:150px;padding:11px 10px;background:#fff;border:1px solid #e1e5e9;border-radius:10px;font-family:'DM Sans',sans-serif}
+.minute-label{display:flex;align-items:flex-start;justify-content:space-between;gap:5px;min-height:36px;font-size:12px;font-weight:400;line-height:1.32;letter-spacing:0;color:#32333e}
 .minute-label span{flex:1}
-.minute-help{display:inline-flex;justify-content:center;align-items:center;flex:none;width:17px;height:17px;margin-top:1px;border:2px solid #85878d;border-radius:50%;background:#fff;color:#85878d;font:700 11px/1 'DM Sans',sans-serif;padding:0;cursor:help}
-.minute-value{font-family:Manrope,sans-serif;font-size:clamp(28px,2.5vw,38px);font-weight:400;line-height:1.2;letter-spacing:0;margin-top:10px;white-space:nowrap}
-.minute-trend{display:inline-flex;align-items:center;gap:4px;max-width:100%;min-height:38px;padding:5px 7px;margin-top:10px;border-radius:22px;font-size:clamp(10px,.9vw,13px);font-weight:400;line-height:1.3}
-.minute-trend .arrow{font-size:17px;line-height:1;align-self:center}
+.minute-help{display:inline-flex;justify-content:center;align-items:center;flex:none;width:15px;height:15px;margin-top:1px;border:1.5px solid #85878d;border-radius:50%;background:#fff;color:#85878d;font:700 10px/1 'DM Sans',sans-serif;padding:0;cursor:help}
+.minute-value{font-family:'DM Sans',sans-serif;font-size:24px;font-weight:500;line-height:1.2;letter-spacing:0;margin-top:8px;white-space:nowrap}
+.minute-trend{display:inline-flex;align-items:center;gap:3px;max-width:100%;min-height:30px;padding:4px 6px;margin-top:8px;border-radius:18px;font-size:10px;font-weight:400;line-height:1.25}
+.minute-trend .arrow{font-size:14px;line-height:1;align-self:center}
 .minute-trend.neutral{background:#eaeaec;color:#84858b}
 .minute-trend.bad{background:#fceceb;color:#a74947}
 .minute-trend.good{background:#f0f9ef;color:#458041}
 .minute-trend.none{visibility:hidden}
-@media(max-width:1000px){.minute-grid{grid-template-columns:repeat(6,minmax(132px,1fr));overflow-x:auto}.minute-heading{font-size:23px}}
+@media(max-width:1000px){.minute-grid{grid-template-columns:repeat(6,minmax(132px,1fr));overflow-x:auto}}
+.symptom-row{cursor:help}
