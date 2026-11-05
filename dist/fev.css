@@ -1,0 +1,8 @@
+.legend.ring{background:white;border:2px solid #a69570;border-radius:50%;width:9px;height:9px;vertical-align:-1px}
+.reading-row{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:11px 0;font-size:12px}
+.reading-row strong{margin-left:auto;white-space:nowrap}
+.reading-status{font-size:10px;white-space:nowrap;color:var(--teal)}
+.reading-status.rejected{color:#788780}
+.reading-status.conflicting{color:var(--amber)}
+.reading-point:hover,.best-point:hover{stroke-width:3;filter:drop-shadow(0 0 3px #306e6966)}
+@media(max-width:560px){.reading-row{flex-wrap:wrap}.reading-status{width:100%;text-align:right}}
