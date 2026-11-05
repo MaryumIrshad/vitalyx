@@ -1,0 +1,64 @@
+/* Lavender Mist with plum UI accents. Patient identity circles remain vivid red, blue, and orange. */
+:root{--ink:#352841;--muted:#786f80;--teal:#725788;--line:#e4dce9;--bg:#f6f2f8;--amber:#bd8541}
+body{background:#f6f2f8;color:#352841}
+button:focus-visible,a:focus-visible,select:focus-visible,summary:focus-visible{outline-color:#876ba0}
+main{background:#f6f2f8}
+.sidebar{background:#30243a;border-color:#46384f;color:#f8f5fa}
+.brand{color:#fff}.brand>span:last-child{color:#e4d8eb}.brand-icon{background:#765b90;color:#fff}
+.workspace-label{color:#bdafc7}.sidebar-bottom{color:#f7f3f9}.sidebar-bottom .avatar.small{background:#e7dcef;color:#59436c}
+.nav{color:#d3cad9}.nav.active{background:#574565;color:#fff}.nav.active:before{background:#b79aca}
+header{background:#fbf9fc;border-color:#e7e0eb}.breadcrumb{color:#827889}.breadcrumb span{color:#c0b6c7}.breadcrumb strong{color:#46364f}
+.demo-dot,.live-dot{background:#876ba0}
+.icon-button{color:#725788}
+.avatar{background:#e8dff0;color:#654d7d}.avatar.small{background:#e8dff0}
+.eyebrow{color:#725788}h1,h2,h3{color:#352841}
+.tag{background:#eee8f3;color:#6f5b7f}
+select,.patient-search input{border-color:#ddd3e5;color:#40324b;background:#fff}
+.tabs button.selected{border-color:#765b90;color:#684d81}
+.button{border-color:#ddd3e5;color:#59466a;background:#fff}.button:hover{background:#f2edf6}
+.summary{background:#eee8f4;border-color:#ded3e7}.summary-icon{color:#725788}.summary h2{color:#403149}.summary p{color:#6e6277}.summary .button{border-color:#cabbd5}
+.metric,.card,.context-grid .card,.quality,.constellation-card,.patient-roster{border-color:#e4dce9}
+.metric-label{color:#6e6277}.metric-note.attention{color:#a96d36}
+.card-heading p,.metric-note,.chart-footer,.legend-row,.dose-legend,.roster-caption{color:#786f80}
+.pill{background:#f0ebf4;color:#766683}.pill.teal{background:#e9e1f0;color:#684d81}.pill.amber{background:#f7ebda;color:#9a6a33}
+.prompt span,.spark{color:#806596}
+.chart text{fill:#8d8295}.chart-footer{color:#786f80}
+.legend.teal-bg{background:#765b90}.legend.amber-bg{background:#e29132}.legend.red-bg{background:#e53935}.legend.gray-bg{background:#d9d2df}
+.bar{background:#ede8f1}.bar span{background:#806596}
+.dose-bar span:first-child{background:#806596}.dose-bar span:last-child{background:#e6e0e9}
+.dose-legend .gray-bg{background:#d9d2df}
+.timeline .day{color:#8d8295}.day i{background:#e9e3ec}.day.green i{background:#9b82ae}.day.yellow i{background:#f2a12e}.day.red i{background:#ed4744}
+.quality{background:#fbf9fc;color:#786f80}summary{color:#6d5482}
+th{background:#f3eef6;color:#766b7e}td,th{border-color:#e7e0eb}
+dialog{border-color:#e4dce9;color:#352841;background:#fff}dialog::backdrop{background:#30243a80}.close{background:#f0ebf4;color:#59466a}dialog p,dialog li{color:#6e6277}.detail-grid div{background:#f5f1f7}
+.catalog-title p,.catalog-list p,.context-grid p,.context-intro{color:#786f80}
+.minute-summary{background:#f6f2f8;color:#352841}.minute-heading{color:#352841}
+.minute-anchor{color:#806596}.minute-card{background:#fff;border-color:#e2d9e8;color:#352841}
+.minute-label{color:#42374a}.minute-help{border-color:#806596;color:#725788;background:#fff}
+.minute-trend.neutral{background:#eee9f2;color:#817787}.minute-trend.bad{background:#fae9e9;color:#b23b3b}.minute-trend.good{background:#eee8f3;color:#684d81}
+.reading-row{border-color:#e4dce9}.reading-status{color:#725788}.reading-status.rejected{color:#93889a}.reading-status.conflicting{color:#bd8541}
+.reading-point:hover,.best-point:hover{filter:drop-shadow(0 0 3px #765b9055)}
+.symptom-detail-toggle{border-color:#ddd3e5;color:#725788}.symptom-detail-toggle[aria-expanded="true"]{background:#eee8f4}.symptom-details{background:#f7f3f9;border-color:#e4dce9}.symptom-details li{border-color:#e8e1ec}
+.patient-list-heading .eyebrow{color:#725788}.patient-search{color:#786f80}.patient-search input{box-shadow:0 4px 14px #40334d0a}
+.constellation-card,.patient-roster{background:#fff;box-shadow:0 9px 28px #3927470a}
+.card-heading h2,.roster-heading h2{color:#352841}.card-heading p,.roster-caption{color:#786f80}
+.pill.teal{background:#eee8f4;color:#684d81;border-color:#e1d6e8}
+.constellation{background:radial-gradient(ellipse at 50% 48%,#eae0f0 0%,#f0e9f5 34%,#f7f2f8 70%,#fbf8fb 100%);border-color:#e5dbea}
+.constellation:before,.constellation:after{border-color:#c9b8d4;box-shadow:0 0 0 1px #fff8,inset 0 0 26px #ffffff60}.constellation:after{border-color:#c6b5d0}
+.constellation-lines line{stroke:#a28cac}.constellation-center{background:linear-gradient(145deg,#876ba0,#5f4775);box-shadow:0 0 0 9px #e4d9eb,0 8px 24px #5f477540}
+.constellation-patient[data-patient="alex"] .constellation-avatar{border-color:#fff;color:#fff;background:#ed3434;box-shadow:0 0 0 7px #ffd8d7,0 6px 18px #783b3a35}
+.constellation-patient[data-patient="jordan"] .constellation-avatar{border-color:#fff;color:#fff;background:#1688ef;box-shadow:0 0 0 7px #d4eaff,0 6px 18px #294e7435}
+.constellation-patient[data-patient="sam"] .constellation-avatar{border-color:#fff;color:#fff;background:#ff8a00;box-shadow:0 0 0 7px #ffe1b8,0 6px 18px #75482035}
+.constellation-name{color:#352841}.constellation-meta{color:#786f80}
+.story-heading strong{color:#352841}.story-heading>div:first-child span{color:#867b8b}.story-legend span{color:#786f80}
+.legend-steady{background:#1688ef}.legend-symptoms{background:#ed3434}.legend-unknown{background:#ff8a00}
+.story-day{background:#e6f1fc;color:#315c83}.story-day .story-mark{background:#1688ef}.story-day.symptoms{background:#fbe8e8;color:#963b3b}.story-day.symptoms .story-mark{background:#ed3434}.story-day.unknown{background:#fff0dc;color:#8f5f20}.story-day.unknown .story-mark{background:#ff8a00}.story-explainer{color:#786f80}
+.patient-preview{background:linear-gradient(145deg,#f2edf6,#fbf9fc 76%);border-color:#e2d9e8;box-shadow:inset 0 1px #fff}
+.preview-top .roster-avatar{background:#e7dcef;color:#654d7d;border-color:#d8c9e1}.preview-top .eyebrow{color:#725788}.preview-top h3{color:#352841}.preview-top p,.preview-last,.preview-note{color:#786f80}
+.preview-last{border-color:#e4dce9}.preview-last strong{color:#40324b}
+.preview-stats div{border-color:#e8e0ed;box-shadow:0 2px 7px #40334d08}.preview-stats span{color:#786f80}.preview-stats strong{color:#5c4473}.preview-open{color:#624a79;background:#eee8f4}
+.roster-count{background:#eee8f4;color:#684d81}.patient-list-item{border-color:#eee9f1}.patient-list-item:hover,.patient-list-item.is-current{background:#f7f3f9}.patient-list-item.is-current{box-shadow:inset 3px 0 #806596}.roster-info strong{color:#352841}.roster-info span{color:#786f80}.roster-days{color:#765b90}.roster-arrow{color:#86798d}
+.patient-list-item:nth-of-type(1) .roster-avatar{background:#ed3434;color:#fff}.patient-list-item:nth-of-type(2) .roster-avatar{background:#1688ef;color:#fff}.patient-list-item:nth-of-type(3) .roster-avatar{background:#ff8a00;color:#fff}
+.preview-top [data-color="alex"]{background:#ed3434;color:#fff;border-color:#fff}.preview-top [data-color="jordan"]{background:#1688ef;color:#fff;border-color:#fff}.preview-top [data-color="sam"]{background:#ff8a00;color:#fff;border-color:#fff}
+.roster-avatar{background:#e7dcef;color:#654d7d}.empty-roster{color:#786f80}
+@media(max-width:650px){.sidebar{background:#30243a}}
