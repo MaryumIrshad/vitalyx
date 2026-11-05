@@ -91,3 +91,27 @@
 .roster-avatar{width:34px;height:34px;font-size:10px}.roster-info strong{font-size:10px}.roster-info span{font-size:8px;margin-top:3px}.roster-days{font-size:8px}.roster-arrow{font-size:15px}
 @media(max-width:1000px){.patient-list-layout{grid-template-columns:1fr}.patient-roster{display:grid;grid-template-columns:1fr 1.1fr;gap:0 22px}.patient-preview{grid-column:2;grid-row:1 / span 2;margin:0}.roster-heading,.patient-roster>#patient-roster-list{grid-column:1}.constellation{min-height:390px}}
 @media(max-width:650px){.patient-roster{display:block}.patient-preview{margin-bottom:16px}.patient-list-heading h1{font-size:25px}.story-heading{align-items:flex-start;flex-direction:column}.story-days{gap:3px}.story-day{padding:6px 3px}.story-day small{font-size:7px}.constellation{min-height:340px}.constellation:after{width:300px;height:300px}.constellation:before{width:205px;height:205px}.constellation-patient{min-width:90px}.constellation-avatar{width:48px;height:48px}.constellation-meta{font-size:7px}}
+
+/* Presentation sizing and red / blue / orange patient palette */
+.patient-list-heading h1{font-size:32px}.patient-list-heading p{font-size:15px}
+.card-heading h2,.roster-heading h2{font-size:16px}.card-heading p,.roster-caption{font-size:12px}
+.constellation-patient{background:transparent!important;box-shadow:none!important;border:1px solid transparent;min-width:138px}
+.constellation-patient:hover,.constellation-patient:focus-visible,.constellation-patient.is-current{background:transparent!important;box-shadow:none!important}
+.constellation-patient:focus-visible{outline:2px solid #537f9d;outline-offset:2px}
+.constellation-patient .constellation-avatar{width:64px;height:64px;font-size:17px;transition:transform .18s,box-shadow .18s}
+.constellation-patient:hover .constellation-avatar,.constellation-patient:focus-visible .constellation-avatar,.constellation-patient.is-current .constellation-avatar{transform:scale(1.08)}
+.constellation-patient[data-patient="alex"] .constellation-avatar{border-color:#c7534f;color:#a54440;background:#fff7f5;box-shadow:0 0 0 7px #f5dfdc,0 6px 18px #5a38241a}
+.constellation-patient[data-patient="jordan"] .constellation-avatar{border-color:#4d7fa8;color:#3e678a;background:#f5f9fd;box-shadow:0 0 0 7px #dce9f3,0 6px 18px #334d641a}
+.constellation-patient[data-patient="sam"] .constellation-avatar{border-color:#d28c43;color:#a76d30;background:#fff9f1;box-shadow:0 0 0 7px #f5e7d3,0 6px 18px #5d48291a}
+.constellation-name{font-size:13px}.constellation-meta{font-size:10px}
+.constellation-center{background:linear-gradient(145deg,#507da2,#385d7b);box-shadow:0 0 0 9px #e0eaf1,0 8px 24px #375b7740}
+.constellation-lines line{stroke:#91aabd;stroke-width:.36;stroke-dasharray:.8 .85}
+.story-heading strong{font-size:13px}.story-heading>div:first-child span{font-size:11px}.story-legend{gap:8px}.story-legend span{font-size:10px}.story-legend i{width:8px;height:8px}
+.legend-steady{background:#4d7fa8}.legend-symptoms{background:#c7534f}.legend-unknown{background:#d28c43}
+.story-days{gap:7px}.story-day{padding:9px 7px;background:#edf4f9;color:#3f6684}.story-day .story-mark{width:9px;height:9px;background:#4d7fa8}.story-day.symptoms{background:#fbefed;color:#934944}.story-day.symptoms .story-mark{background:#c7534f}.story-day.unknown{background:#fbf2e6;color:#976b39}.story-day.unknown .story-mark{background:#d28c43}.story-day strong{font-size:11px}.story-day small{font-size:10px}
+.story-explainer{margin:9px 0 0;color:#6f7d75;font-size:10px;line-height:1.5}
+.patient-preview{padding:18px}.preview-top h3{font-size:17px}.preview-top p{font-size:11px}.preview-top .eyebrow{font-size:9px}.preview-top .roster-avatar{width:52px;height:52px;font-size:14px}
+.preview-last,.preview-last strong{font-size:11px}.preview-stats span{font-size:10px}.preview-stats strong{font-size:15px}.preview-stats div{padding:11px}.preview-note{font-size:10px}.preview-open{height:40px;font-size:12px}
+.roster-info strong{font-size:12px}.roster-info span{font-size:10px}.roster-days{font-size:10px}.roster-avatar{width:38px;height:38px;font-size:11px}
+.patient-search{font-size:12px}.patient-search input{height:46px;font-size:14px;padding:11px 14px}
+@media(max-width:650px){.patient-list-heading h1{font-size:27px}.constellation-patient{min-width:102px}.constellation-patient .constellation-avatar{width:50px;height:50px;font-size:14px}.constellation-name{font-size:11px}.constellation-meta{font-size:8px}.story-legend span{font-size:9px}.story-day{padding:7px 3px}.story-day small{font-size:8px}.story-explainer{font-size:10px}}
