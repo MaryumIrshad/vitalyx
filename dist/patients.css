@@ -39,8 +39,8 @@
 .preview-top p{margin:0;color:var(--muted);font-size:10px}
 .preview-last{display:flex;justify-content:space-between;gap:8px;margin:12px 0;padding:9px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:10px;color:var(--muted)}
 .preview-last strong{color:var(--ink);font-weight:600}
-.preview-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.preview-stats div{padding:9px;background:#fff;border:1px solid #e8eeea;border-radius:7px}
+.preview-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;min-width:0}
+.preview-stats div{min-width:0;padding:9px;background:#fff;border:1px solid #e8eeea;border-radius:7px}
 .preview-stats span{display:block;font-size:9px;color:var(--muted);line-height:1.35}
 .preview-stats strong{display:block;margin-top:4px;font:600 14px Manrope,sans-serif;color:var(--ink)}
 .preview-note{margin:9px 0;color:var(--muted);font-size:9px}
@@ -54,7 +54,7 @@
 .patient-list-heading .eyebrow{letter-spacing:.16em;color:#4f8779;font-size:10px;font-weight:700}
 .patient-list-heading h1{font-size:30px;letter-spacing:-.04em;margin:7px 0 5px}
 .patient-list-heading p{font-size:13px}
-.patient-search{min-width:230px;font-size:10px;font-weight:600;color:#63776f}
+.patient-search{min-width:min(230px,100%);font-size:10px;font-weight:600;color:#63776f}
 .patient-search input{height:42px;border-radius:11px;background:#fff;border-color:#dce8e1;box-shadow:0 4px 14px #345d4d0a;font-size:12px}
 .patient-list-layout{grid-template-columns:minmax(0,1.48fr) minmax(300px,.92fr);gap:18px;align-items:start}
 .constellation-card,.patient-roster{border:1px solid #e3eae5;border-radius:16px;padding:18px;background:#fff;box-shadow:0 9px 28px #183c2b0a}
