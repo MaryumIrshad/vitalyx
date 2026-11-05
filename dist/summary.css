@@ -15,5 +15,6 @@
 .minute-trend.bad{background:#fceceb;color:#a74947}
 .minute-trend.good{background:#f0f9ef;color:#458041}
 .minute-trend.none{visibility:hidden}
-@media(max-width:1600px){.minute-grid{grid-template-columns:repeat(6,minmax(238px,1fr));gap:20px}.minute-card{padding:24px}.minute-label{font-size:23px}.minute-value{font-size:59px}.minute-trend{font-size:22px;line-height:1.3}}
-@media(max-width:700px){.minute-heading{font-size:35px;margin-bottom:24px}.minute-grid{grid-template-columns:repeat(6,238px);gap:15px}.minute-card{min-height:320px}.minute-label{font-size:23px}.minute-value{font-size:59px}.minute-trend{font-size:21px}}
+@media(max-width:1700px){.minute-grid{grid-template-columns:repeat(3,minmax(0,1fr));max-width:1000px;gap:20px}}
+@media(max-width:900px){.minute-grid{grid-template-columns:repeat(2,minmax(0,1fr));max-width:660px;gap:16px}}
+@media(max-width:620px){.minute-heading{font-size:35px;margin-bottom:24px}.minute-grid{grid-template-columns:minmax(0,300px);gap:15px}.minute-card{min-height:320px}.minute-label{font-size:26px}.minute-value{font-size:64px}.minute-trend{font-size:26px}}
