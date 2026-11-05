@@ -38,6 +38,13 @@ function minuteCard(label,value,help,change,unit='',lowerIsBetter=false,medianCh
 }
 const rows=()=>dataset(current).slice(-period),fmt=d=>new Date(d+'T12:00:00Z').toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'UTC'});
 function openPatient(key){current=key;$('patient').value=key;$('patient-list-page').classList.add('hidden');$('patient-page').classList.remove('hidden');$('catalog-page').classList.add('hidden');$('crumb').textContent=patients[key].name;render();}
+function renderPatientPreview(key){
+  if(!key){$('patient-preview').innerHTML='<p class="preview-empty">Hover over a patient to see their recent summary.</p>';return;}
+  const p=patients[key],recent=dataset(key).slice(-15),logged=recent.filter(d=>!d.missing),symptoms=logged.filter(d=>d.symptoms.length),bestDays=recent.map(d=>({day:d,best:bestAccepted(d)})).filter(x=>x.best),latest=bestDays.at(-1),doseSlots=recent.length*2,doses=recent.reduce((sum,d)=>sum+d.doses,0),coverage=Math.round(doses/doseSlots*100),school=recent.reduce((sum,d)=>sum+d.school,0),initials=p.name.split(' ').map(x=>x[0]).join('');
+  const latestDate=[...recent].reverse().find(d=>!d.missing)?.date;
+  $('patient-preview').innerHTML=`<div class="preview-top"><span class="roster-avatar">${initials}</span><div><div class="eyebrow">PATIENT SNAPSHOT</div><h3>${p.name}</h3><p>${p.age} years · Asthma tracker · Demo patient</p></div></div><div class="preview-last">Last check-in <strong>${latestDate?fmt(latestDate)+' 2026':'No recent entry'}</strong></div><div class="preview-stats"><div><span>Symptom days</span><strong>${symptoms.length} / ${logged.length}</strong></div><div><span>Controller marked taken</span><strong>${coverage}%</strong></div><div><span>Latest daily best FEV1</span><strong>${latest?latest.best.fev.toFixed(2)+' L':'No accepted reading'}</strong></div><div><span>School days missed</span><strong>${school}</strong></div></div><p class="preview-note">Medication reports are patient self-reports. Missing days are unknown.</p><button class="button preview-open" data-open-patient="${key}">Open patient view →</button>`;
+  $('patient-preview').querySelector('[data-open-patient]').onclick=()=>openPatient(key);
+}
 function renderPatientDirectory(query=''){
   const entries=Object.entries(patients).filter(([key,p])=>`${p.name} asthma`.toLowerCase().includes(query.trim().toLowerCase()));
   const positions={alex:[27,28],jordan:[73,28],sam:[50,79]};
@@ -46,7 +53,8 @@ function renderPatientDirectory(query=''){
   const links=entries.map(([key])=>{const [px,py]=positions[key];return `<line x1="50" y1="50" x2="${px}" y2="${py}"/>`}).join('');
   $('constellation').innerHTML=entries.length?`<svg class="constellation-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${links}</svg><div class="constellation-center">CARE<br>TEAM</div>${patientNodes}`:'<p class="empty-roster">No patients match your search.</p>';
   $('patient-roster-list').innerHTML=entries.map(([key,p])=>{const days=dataset(key),tracked=days.filter(d=>!d.missing).length,last=[...days].reverse().find(d=>!d.missing),initials=p.name.split(' ').map(x=>x[0]).join('');return `<button class="patient-list-item" data-patient="${key}"><span class="roster-avatar">${initials}</span><span class="roster-info"><strong>${p.name}</strong><span>${p.age} years · Asthma tracker · Last check-in ${fmt(last.date)}</span></span><span class="roster-days">${tracked}/30 days</span><span class="roster-arrow" aria-hidden="true">›</span></button>`}).join('');
-  document.querySelectorAll('[data-patient]').forEach(button=>button.onclick=()=>openPatient(button.dataset.patient));
+  document.querySelectorAll('[data-patient]').forEach(button=>{button.onclick=()=>openPatient(button.dataset.patient);button.addEventListener('pointerenter',()=>renderPatientPreview(button.dataset.patient));button.addEventListener('focus',()=>renderPatientPreview(button.dataset.patient));});
+  renderPatientPreview(entries[0]?.[0]);
 }
 function showDirectory(){ $('patient-page').classList.add('hidden');$('patient-list-page').classList.remove('hidden');$('catalog-page').classList.add('hidden');$('crumb').textContent='Care constellation';renderPatientDirectory($('patient-search').value); }
 function modal(html){$('detail-content').innerHTML=html;$('detail').showModal();}

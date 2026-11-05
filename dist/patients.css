@@ -31,5 +31,19 @@
 .roster-info{flex:1;min-width:0}.roster-info strong{display:block;font-size:12px}.roster-info span{display:block;margin-top:4px;font-size:10px;color:var(--muted)}
 .roster-days{font-size:10px;color:#5d7c70;white-space:nowrap}.roster-arrow{color:#82958c;font-size:18px}
 .empty-roster{position:absolute;inset:45% 0 auto;text-align:center;color:var(--muted);font-size:12px}
+.patient-preview{margin-top:16px;padding:15px;border:1px solid #dfe9e4;border-radius:9px;background:linear-gradient(135deg,#f5f9f6,#fff)}
+.preview-empty{font-size:11px;color:var(--muted)}
+.preview-top{display:flex;align-items:center;gap:10px}
+.preview-top .roster-avatar{width:44px;height:44px}
+.preview-top h3{margin:3px 0;font-size:14px}
+.preview-top p{margin:0;color:var(--muted);font-size:10px}
+.preview-last{display:flex;justify-content:space-between;gap:8px;margin:12px 0;padding:9px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:10px;color:var(--muted)}
+.preview-last strong{color:var(--ink);font-weight:600}
+.preview-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.preview-stats div{padding:9px;background:#fff;border:1px solid #e8eeea;border-radius:7px}
+.preview-stats span{display:block;font-size:9px;color:var(--muted);line-height:1.35}
+.preview-stats strong{display:block;margin-top:4px;font:600 14px Manrope,sans-serif;color:var(--ink)}
+.preview-note{margin:9px 0;color:var(--muted);font-size:9px}
+.preview-open{width:100%;color:var(--teal)}
 @media(max-width:1000px){.patient-list-layout{grid-template-columns:1fr}.constellation{min-height:340px}}
 @media(max-width:600px){.patient-list-heading{align-items:stretch;flex-direction:column}.patient-search{min-width:0}.constellation{min-height:300px}.constellation:after{width:290px;height:290px}.constellation:before{width:190px;height:190px}.constellation-avatar{width:44px;height:44px}.constellation-patient{min-width:75px}.constellation-name{font-size:10px}.constellation-meta{font-size:8px}.constellation-center{width:68px;height:68px;font-size:10px}}
