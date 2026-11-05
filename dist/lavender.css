@@ -14,6 +14,24 @@ header{background:#fbf9fc;border-color:#e7e0eb}.breadcrumb{color:#827889}.breadc
 .breadcrumb .header-brand{font-weight:700;color:#59436c}
 footer strong{color:#59436c;font-size:10px}
 @media(max-width:900px){.brand-affiliation{display:none}}
+.clinical-insights-panel{margin:18px 0 20px;border-color:#e1d7e8;background:#fbf9fc;padding:20px}
+.clinical-insights-heading{display:flex;justify-content:space-between;align-items:end;gap:14px;margin-bottom:14px}
+.clinical-insights-heading h2{margin-top:4px;color:#46364f;font-size:18px}
+.clinical-insights-heading>p{margin:0;color:#786f80;font-size:10px;text-align:right}
+.clinical-insights-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.clinical-insight{display:grid;grid-template-columns:24px minmax(0,1fr);gap:9px;padding:13px;background:#fff;border:1px solid #e7e0eb;border-radius:9px;min-width:0}
+.insight-number{display:grid;place-items:center;width:23px;height:23px;border-radius:50%;background:#eee7f3;color:#654d7d;font-size:10px;font-weight:700}
+.insight-copy h3{margin:2px 0 7px;color:#46364f;font-size:12px}
+.insight-summary{margin:0 0 7px;color:#352841;font-size:11px;line-height:1.5}
+.insight-context{margin:0;color:#786f80;font-size:9px;line-height:1.45}
+.insight-evidence{margin-top:10px;border-top:1px solid #eee8f2;padding-top:7px;color:#654d7d;font-size:9px}
+.insight-evidence summary{color:#654d7d;font-weight:600}
+.insight-evidence ul{list-style:none;padding:0;margin:8px 0 0;max-height:190px;overflow:auto}
+.insight-evidence li{display:grid;grid-template-columns:auto 1fr;gap:7px;padding:5px 0;border-bottom:1px solid #f0ebf3;align-items:start}
+.insight-evidence li button{border:0;background:none;padding:0;color:#654d7d;font:inherit;text-decoration:underline;white-space:nowrap}
+.insight-evidence li span{color:#786f80;line-height:1.4}
+@media(max-width:1120px){.clinical-insights-list{grid-template-columns:1fr}.clinical-insights-panel{padding:16px}}
+@media(max-width:560px){.clinical-insights-heading{align-items:start;flex-direction:column}.clinical-insights-heading>p{text-align:left}}
 .avatar{background:#e8dff0;color:#654d7d}.avatar.small{background:#e8dff0}
 .eyebrow{color:#725788}h1,h2,h3{color:#352841}
 .tag{background:#eee8f3;color:#6f5b7f}
