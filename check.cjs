@@ -41,9 +41,13 @@ for (const key of Object.keys(patients)) {
   }
  }
 }
-assert($('clinical-insights').innerHTML.includes('Symptoms and school impact'));
-assert($('clinical-insights').innerHTML.includes('Accepted lung-function readings'));
-assert($('clinical-insights').innerHTML.includes('Separate reporting streams'));
+assert($('clinical-insights').innerHTML.includes('Symptoms & school'));
+assert($('clinical-insights').innerHTML.includes('Accepted FEV1'));
+assert($('clinical-insights').innerHTML.includes('Medication reporting'));
+assert.equal(($('clinical-insights').innerHTML.match(/class="insight-finding"/g)||[]).length,3);
+assert.equal(($('clinical-insights').innerHTML.match(/<details class="insight-details">/g)||[]).length,3);
+assert($('clinical-insights').innerHTML.includes('tracker days had symptoms'));
+assert($('clinical-insights').innerHTML.includes('Rejected and conflicting'));
 console.log('Passed: all 3 patients x 3 specialties x 3 date ranges (27 combinations), quality-filtered FEV1, six cards, shared insights, daily rows, and details.');
 `,context);
 const stats=vm.runInContext('oneMinuteStats',context);
@@ -130,5 +134,12 @@ assert.equal(noComparisons.deviceReadingDays,0);
 vm.runInContext('renderPatientDirectory()',context);
 assert(element('patient-roster-list').innerHTML.includes('No comparison cue'));
 assert(element('patient-roster-list').innerHTML.includes('check recent stream coverage'));
-assert(element('patient-roster-list').innerHTML.includes('device 0/7'));
+assert(element('patient-roster-list').innerHTML.includes('device readings 0/7'));
+context.auditFixture=reviewFixture;
+vm.runInContext('renderPatientDirectory()',context);
+const directoryMarkup=element('patient-roster-list').innerHTML;
+assert(directoryMarkup.includes('class="priority-cue trend-bad"'));
+assert(directoryMarkup.includes('+25 pp')&&directoryMarkup.includes('↑'));
+assert(directoryMarkup.includes('<details class="priority-evidence">'));
+assert(directoryMarkup.indexOf('Symptoms reported on')>directoryMarkup.indexOf('<details class="priority-evidence">'),'Full cue evidence should be inside the collapsed disclosure');
 console.log('Passed: directory cues use paired 7-day denominators, accepted daily-best medians with sample counts, consecutive tracker gaps, stream coverage, and cue-count/frequency sorting.');
