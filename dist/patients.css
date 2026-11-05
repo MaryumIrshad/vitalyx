@@ -1,0 +1,35 @@
+.patient-list-page{padding:34px 0 28px}
+.patient-list-heading{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:22px}
+.patient-list-heading h1{margin:6px 0;font-size:26px}
+.patient-list-heading p,.roster-caption{margin:0;color:var(--muted);font-size:12px}
+.patient-search{min-width:250px;color:var(--muted);font-size:10px}
+.patient-search input{width:100%;margin-top:5px;padding:10px 12px;border:1px solid var(--line);border-radius:7px;color:var(--ink);font:12px 'DM Sans',sans-serif}
+.patient-list-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(290px,1fr);gap:20px;align-items:stretch}
+.constellation-card,.patient-roster{background:#fff;border:1px solid var(--line);border-radius:11px;padding:20px;min-width:0}
+.constellation-card .card-heading{margin-bottom:10px}
+.constellation{position:relative;min-height:390px;overflow:hidden;border-radius:9px;background:radial-gradient(ellipse at center,#eef6f4 0,#f7faf8 55%,#fff 100%)}
+.constellation:before,.constellation:after{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border:1px dashed #cbded7;border-radius:50%;pointer-events:none}
+.constellation-lines{position:absolute;inset:0;width:100%;height:100%;z-index:1;overflow:visible}
+.constellation-lines line{stroke:#9fc6ba;stroke-width:.25;stroke-dasharray:1.2 1.1}
+.constellation:before{width:230px;height:230px}.constellation:after{width:360px;height:360px}
+.constellation-center{position:absolute;left:50%;top:50%;z-index:2;transform:translate(-50%,-50%);width:84px;height:84px;display:grid;place-content:center;text-align:center;border-radius:50%;background:#287c74;color:white;box-shadow:0 0 0 10px #dcece6;font:700 12px/1.35 Manrope,sans-serif}
+.constellation-link{position:absolute;left:50%;top:50%;height:1px;width:var(--length);transform:rotate(var(--angle));transform-origin:left center;background:linear-gradient(90deg,#88b9ac,#c5dcd5);z-index:1}
+.constellation-patient{position:absolute;z-index:3;left:var(--x);top:var(--y);transform:translate(-50%,-50%);border:0;background:transparent;text-align:center;color:var(--ink);padding:5px;min-width:88px}
+.constellation-patient:hover .constellation-avatar{transform:scale(1.08);box-shadow:0 0 0 7px #dcece6}
+.constellation-avatar{display:grid;place-items:center;margin:0 auto 6px;width:52px;height:52px;border-radius:50%;background:#fff;border:3px solid #79ab9c;box-shadow:0 0 0 5px #e8f2ed;font:700 14px Manrope,sans-serif;transition:.15s}
+.constellation-patient[data-patient="jordan"] .constellation-avatar{border-color:#78a9ce;box-shadow:0 0 0 5px #e9f2f8}
+.constellation-patient[data-patient="sam"] .constellation-avatar{border-color:#d6ad68;box-shadow:0 0 0 5px #f8f0df}
+.constellation-name{display:block;font-size:11px;font-weight:700;white-space:nowrap}
+.constellation-meta{display:block;margin-top:3px;font-size:9px;color:var(--muted);white-space:nowrap}
+.patient-roster h2{margin-bottom:4px}
+.roster-caption{margin-bottom:13px}
+.patient-list-item{display:flex;width:100%;align-items:center;gap:11px;padding:13px 4px;border:0;border-top:1px solid var(--line);background:white;text-align:left}
+.patient-list-item:hover{background:#f8faf8}
+.roster-avatar{display:grid;place-items:center;flex:none;width:40px;height:40px;border-radius:50%;background:#e7f1ec;color:#447363;font:700 12px Manrope,sans-serif}
+.patient-list-item:nth-of-type(2) .roster-avatar{background:#edf3f8;color:#47799c}
+.patient-list-item:nth-of-type(3) .roster-avatar{background:#f7f0e3;color:#9a7841}
+.roster-info{flex:1;min-width:0}.roster-info strong{display:block;font-size:12px}.roster-info span{display:block;margin-top:4px;font-size:10px;color:var(--muted)}
+.roster-days{font-size:10px;color:#5d7c70;white-space:nowrap}.roster-arrow{color:#82958c;font-size:18px}
+.empty-roster{position:absolute;inset:45% 0 auto;text-align:center;color:var(--muted);font-size:12px}
+@media(max-width:1000px){.patient-list-layout{grid-template-columns:1fr}.constellation{min-height:340px}}
+@media(max-width:600px){.patient-list-heading{align-items:stretch;flex-direction:column}.patient-search{min-width:0}.constellation{min-height:300px}.constellation:after{width:290px;height:290px}.constellation:before{width:190px;height:190px}.constellation-avatar{width:44px;height:44px}.constellation-patient{min-width:75px}.constellation-name{font-size:10px}.constellation-meta{font-size:8px}.constellation-center{width:68px;height:68px;font-size:10px}}
