@@ -15,4 +15,3 @@
 .minute-trend.good{background:#f0f9ef;color:#458041}
 .minute-trend.none{visibility:hidden}
 @media(max-width:1000px){.minute-grid{grid-template-columns:repeat(6,minmax(132px,1fr));overflow-x:auto}}
-.symptom-row{cursor:help}

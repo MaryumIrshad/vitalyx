@@ -5,4 +5,15 @@
 .reading-status.rejected{color:#788780}
 .reading-status.conflicting{color:var(--amber)}
 .reading-point:hover,.best-point:hover{stroke-width:3;filter:drop-shadow(0 0 3px #306e6966)}
+.symptom-row{margin:18px 0}
+.symptom-row-heading{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:11px}
+.symptom-count{margin-left:auto;color:var(--muted)}
+.symptom-detail-toggle{border:1px solid var(--line);border-radius:50%;width:21px;height:21px;padding:0;background:white;color:var(--teal);font-size:13px;line-height:1}
+.symptom-detail-toggle[aria-expanded="true"]{background:#eaf3ee}
+.symptom-details{margin-top:10px;padding:11px 12px;background:#f7f9f7;border:1px solid var(--line);border-radius:7px;font-size:10px;line-height:1.5}
+.symptom-details ul{list-style:none;padding:0;margin:0 0 10px;max-height:155px;overflow:auto}
+.symptom-details li{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px solid #e8ede9}
+.symptom-combinations>strong{display:block;margin:5px 0}
+.symptom-combinations>div{display:flex;justify-content:space-between;gap:8px;padding:3px 0}
+.symptom-combinations span{white-space:nowrap;color:var(--muted)}
 @media(max-width:560px){.reading-row{flex-wrap:wrap}.reading-status{width:100%;text-align:right}}
