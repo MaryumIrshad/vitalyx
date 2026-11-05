@@ -3,7 +3,7 @@ const vm = require('vm');
 const assert = require('assert');
 const elements = new Map();
 function element(id) {
-  if (!elements.has(id)) elements.set(id, {innerHTML:'',textContent:'',value:id==='specialty'?'Pulmonology':'',style:{},classList:{toggle(){}},addEventListener(){},showModal(){},close(){}});
+  if (!elements.has(id)) elements.set(id, {innerHTML:'',textContent:'',value:id==='specialty'?'Pulmonology':'',style:{},classList:{toggle(){}},addEventListener(){},querySelectorAll(){return[]},querySelector(){return element('child')},getAttribute(){return'false'},setAttribute(){},showModal(){},close(){}});
   return elements.get(id);
 }
 const context = vm.createContext({document:{getElementById:element,querySelector:()=>element('close'),querySelectorAll:()=>[]},console,Blob,URL,setTimeout,assert});
@@ -30,5 +30,11 @@ for (const key of Object.keys(patients)) {
   detail(data[0].date); assert($('detail-content').innerHTML.length>100);
  }
 }
-console.log('Passed: 3 patients × 3 periods; multiple FEV1 readings, quality selection, daily best trends, daily rows, and detail rendering.');
+for (const specialty of ['Pulmonology','Primary care','Nursing']) {
+ $('specialty').value=specialty; period=7; render();
+ assert($('specialty-lens').innerHTML.includes(specialty+' lens'));
+ const expected=specialty==='Primary care'?'Daily symptoms & school impact':specialty==='Nursing'?'Controller doses reported by day':'Lung function over time';
+ assert.equal($('focus-chart-title').textContent,expected);
+}
+console.log('Passed: 3 patients x 3 date ranges; multiple FEV1 readings, quality selection, daily best trends, daily rows, and detail rendering.');
 `,context);

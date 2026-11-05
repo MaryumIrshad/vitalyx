@@ -10,6 +10,10 @@ main{background:#f6f2f8}
 header{background:#fbf9fc;border-color:#e7e0eb}.breadcrumb{color:#827889}.breadcrumb span{color:#c0b6c7}.breadcrumb strong{color:#46364f}
 .demo-dot,.live-dot{background:#876ba0}
 .icon-button{color:#725788}
+.brand-affiliation{display:block;margin:5px 0 0 37px;color:#d3cad9;font-size:9px;white-space:nowrap}
+.breadcrumb .header-brand{font-weight:700;color:#59436c}
+footer strong{color:#59436c;font-size:10px}
+@media(max-width:900px){.brand-affiliation{display:none}}
 .avatar{background:#e8dff0;color:#654d7d}.avatar.small{background:#e8dff0}
 .eyebrow{color:#725788}h1,h2,h3{color:#352841}
 .tag{background:#eee8f3;color:#6f5b7f}
