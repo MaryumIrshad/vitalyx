@@ -204,6 +204,27 @@ function renderAllPatientCharts(){
   host.querySelectorAll('[data-date]').forEach(mark=>mark.addEventListener('click',()=>{selectSymptomCalendarDate(mark.dataset.date);renderAllPatientCharts();openAllChartsDay(mark.dataset.date);}));
   if(selectedSymptomDate)renderSelectedDayPanel(selectedSymptomDate,'all-charts-day-panel');
 }
+function openChartWindow(kind){
+  const source=kind==='overview'?$('lung-chart').querySelector('svg'):$('all-patient-charts').querySelector('svg.all-charts-svg');
+  if(!source)return;
+  const dialog=$('chart-zoom-dialog'),stage=$('chart-zoom-stage'),chart=source.cloneNode(true),title=kind==='overview'?$('focus-chart-title').textContent:'Monitoring Timeline';
+  $('chart-zoom-title').textContent=title;stage.replaceChildren(chart);chart.style.width='100%';chart.style.height='100%';chart.style.maxWidth='none';chart.style.display='block';chart.style.touchAction='none';
+  const values=(source.getAttribute('viewBox')||`0 0 ${source.getAttribute('width')} ${source.getAttribute('height')}`).trim().split(/[ ,]+/).map(Number);
+  const base={x:values[0],y:values[1],width:values[2],height:values[3]};let view={...base},scale=1,pointer=null,dragged=false,suppressClick=false;
+  const applyView=()=>chart.setAttribute('viewBox',`${view.x} ${view.y} ${view.width} ${view.height}`);
+  const zoom=(factor,clientX,clientY)=>{
+    const next=Math.max(1,Math.min(8,scale*factor));if(next===scale)return;
+    const box=chart.getBoundingClientRect(),rx=clientX===undefined ? .5 : Math.max(0,Math.min(1,(clientX-box.left)/box.width)),ry=clientY===undefined ? .5 : Math.max(0,Math.min(1,(clientY-box.top)/box.height));
+    const anchorX=view.x+rx*view.width,anchorY=view.y+ry*view.height;scale=next;view.width=base.width/scale;view.height=base.height/scale;view.x=anchorX-rx*view.width;view.y=anchorY-ry*view.height;applyView();
+  };
+  $('chart-zoom-in').onclick=()=>zoom(1.25);$('chart-zoom-out').onclick=()=>zoom(.8);$('chart-zoom-reset').onclick=()=>{scale=1;view={...base};applyView();};
+  chart.addEventListener('wheel',event=>{event.preventDefault();zoom(event.deltaY<0?1.15:1/1.15,event.clientX,event.clientY);},{passive:false});
+  chart.addEventListener('pointerdown',event=>{if(event.button!==undefined&&event.button!==0)return;pointer={x:event.clientX,y:event.clientY,viewX:view.x,viewY:view.y};dragged=false;chart.setPointerCapture?.(event.pointerId);});
+  chart.addEventListener('pointermove',event=>{if(!pointer)return;const dx=event.clientX-pointer.x,dy=event.clientY-pointer.y;if(Math.abs(dx)+Math.abs(dy)>3)dragged=true;const box=chart.getBoundingClientRect();view.x=pointer.viewX-dx*view.width/box.width;view.y=pointer.viewY-dy*view.height/box.height;applyView();});
+  chart.addEventListener('pointerup',()=>{if(dragged)suppressClick=true;pointer=null;});chart.addEventListener('pointercancel',()=>{pointer=null;});
+  chart.addEventListener('click',event=>{if(suppressClick){suppressClick=false;event.preventDefault();return;}const mark=event.target.closest?.('[data-date]');if(!mark)return;const date=mark.dataset.date;dialog.close();if(kind==='overview')detail(date);else{selectSymptomCalendarDate(date);renderAllPatientCharts();openAllChartsDay(date);}});
+  dialog.onclose=()=>stage.replaceChildren();dialog.showModal();
+}
 function render(){
   const p=patients[current],r=rows(),logged=r.filter(d=>!d.missing),sym=logged.filter(d=>d.symptoms.length);
   const allReadings=r.flatMap(day=>day.readings.map(reading=>({day,reading}))),accepted=allReadings.filter(item=>item.reading.quality==='accepted');
@@ -226,6 +247,7 @@ $('timeline').style.gridTemplateColumns=`repeat(${r.length},minmax(18px,1fr))`;$
   $('quality-content').innerHTML=`<p><strong>Tracker:</strong> ${stats.trackerDays}/${r.length} days with a tracker submission. Repeated submissions group as one day; symptoms use the union of answers and wellbeing uses the latest answer. No submission means tracker data are unknown.</p><p><strong>Medication:</strong> ${stats.medicationReportDays}/${r.length} days with a patient medication report; ${stats.controllerMarkedDoses}/${stats.controllerSlots} scheduled slots were marked taken among reporting days. These are self-reports, not verified administration. No report does not establish a missed dose.</p><p><strong>Device:</strong> ${stats.deviceReadingDays}/${r.length} days with readings; ${stats.acceptedAttempts} accepted and ${excluded} rejected or conflicting of ${stats.deviceAttempts} attempts. All attempts remain visible; accepted daily best values alone contribute to FEV1 summaries.</p><p><strong>Scope:</strong> All records are generated examples anchored to June 24, 2026. Summaries describe displayed data and are not diagnoses, treatment recommendations, or risk predictions.</p>`;
   $('log-body').innerHTML=[...r].reverse().map(d=>{const best=bestAccepted(d),excludedDay=d.readings.filter(v=>v.quality!=='accepted').length;return `<tr><td><button data-date="${d.date}">${fmt(d.date)}</button></td><td>${d.missing?'No tracker entry':d.symptoms.join(', ')||'None reported'}</td><td>${best?best.fev.toFixed(2)+' L':'—'}<br><small>${d.readings.length} readings${excludedDay?` · ${excludedDay} excluded`:''}</small></td><td>${d.medicationReported?`${d.doses}/2 marked taken (self-report)`:'No medication report'}</td><td>${d.zone==='unknown'?'Unknown':d.zone}</td><td>${d.submissions}</td></tr>`}).join('');
 document.querySelectorAll('[data-date]').forEach(el=>{el.onclick=()=>el.classList.contains('symptom-calendar-cell')?selectSymptomCalendarDate(el.dataset.date):detail(el.dataset.date);if(el.tagName.toLowerCase()==='circle')el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();detail(el.dataset.date)}}});}
+$('open-lung-chart').onclick=()=>openChartWindow('overview');$('open-timeline-chart').onclick=()=>openChartWindow('monitoring');$('chart-zoom-close').onclick=()=>$('chart-zoom-dialog').close();
 $('close-all-charts-detail').onclick=closeAllChartsDay;document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('all-charts-detail').classList.contains('hidden'))closeAllChartsDay();});
 $('patient').onchange=e=>{current=e.target.value;render()};$('range').onchange=e=>{period=+e.target.value;render()};$('specialty').onchange=render;
 $('patient-search').oninput=e=>renderPatientDirectory(e.target.value);
