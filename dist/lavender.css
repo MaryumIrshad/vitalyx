@@ -47,7 +47,7 @@ select,.patient-search input{border-color:#ddd3e5;color:#40324b;background:#fff}
 .bar{background:#ede8f1}.bar span{background:#806596}
 .dose-bar span:first-child{background:#806596}.dose-bar span:last-child{background:#e6e0e9}
 .dose-legend .gray-bg{background:#d9d2df}
-.timeline .day{color:#8d8295}.day i{background:#e9e3ec}.day.green i{background:#9b82ae}.day.yellow i{background:#f2a12e}.day.red i{background:#ed4744}
+.timeline .day{color:#8d8295}.day i{background:#e9e3ec}.day.green i{background:#50a66a}.day.yellow i{background:#f2a12e}.day.red i{background:#ed4744}
 .quality{background:#fbf9fc;color:#786f80}summary{color:#6d5482}
 th{background:#f3eef6;color:#766b7e}td,th{border-color:#e7e0eb}
 dialog{border-color:#e4dce9;color:#352841;background:#fff}dialog::backdrop{background:#30243a80}.close{background:#f0ebf4;color:#59466a}dialog p,dialog li{color:#6e6277}.detail-grid div{background:#f5f1f7}
@@ -111,7 +111,7 @@ dialog{border-color:#e4dce9;color:#352841;background:#fff}dialog::backdrop{backg
 .lens-mark{width:9px;height:9px;border-radius:50%;background:#765b90;box-shadow:0 0 0 4px #e2d7eb;flex:none}.specialty-lens strong{display:block;font-size:var(--font-card-heading)}.specialty-lens small{display:block;margin-top:3px;color:#766b7e;font-size:var(--font-secondary);line-height:1.4}.lens-source{margin-left:auto;color:#86798d;font-size:var(--font-secondary);white-space:nowrap}
 .lens-svg{width:100%;height:215px;overflow:visible}.lens-svg text{fill:#8d8295;font:12px 'DM Sans',sans-serif}
 .lens-stat-list{display:grid;gap:14px;padding:12px 0}.lens-stat>div:first-child{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}.lens-stat strong,.lens-stat span{font-size:var(--font-secondary);color:#4c3a59}.lens-stat-track{height:8px;border-radius:99px;background:#efeaf2;overflow:hidden}.lens-stat-track i{display:block;height:100%;border-radius:99px;background:#806596}.lens-stat-track i.blue{background:#1688ef}.lens-stat-track i.orange{background:#ff8a00}.lens-stat-track i.red{background:#ed3434}
-.day.lens-symptoms i{background:#ed3434}.day.lens-school i{background:#ff8a00}.day.lens-steady i{background:#1688ef}.day.lens-unknown i{background:#b9adbf}.day.lens-once i{background:#806596}.day.lens-repeat i{background:#ff8a00}
+.day.lens-symptoms i{background:#ed3434}.day.lens-school i{background:#ff8a00}.day.lens-steady i{background:#50a66a}.day.lens-unknown i{background:#b9adbf}.day.lens-once i{background:#50a66a}.day.lens-repeat i{background:#ff8a00}
 .timeline .day.lens-unknown,.timeline .day.lens-once,.timeline .day.lens-repeat,.timeline .day.lens-symptoms,.timeline .day.lens-school,.timeline .day.lens-steady{color:#7c7184}
 .chart text{font:12px 'DM Sans',sans-serif}.chart-footer,.legend-row{font-size:var(--font-secondary);line-height:1.45}.day{font-size:var(--font-secondary)}.card-note,.quality{font-size:var(--font-secondary);line-height:1.55}.dose-legend{font-size:var(--font-secondary);line-height:1.4}.med-heading{font-size:var(--font-secondary)}.prompt{font-size:var(--font-body);line-height:1.55}.filters label,.patient-select,.tabs button,.period-line{font-size:var(--font-secondary)}
 @media(max-width:1150px){.priority-table-head,.priority-row{grid-template-columns:30px minmax(150px,1fr) minmax(180px,1.1fr) 95px;gap:8px}.priority-secondary-list{padding:16px}.priority-spotlight-card{padding:18px}}
@@ -124,6 +124,9 @@ dialog{border-color:#e4dce9;color:#352841;background:#fff}dialog::backdrop{backg
 @media(max-width:650px){.insight-evidence li{grid-template-columns:minmax(0,1fr)}.insight-evidence li button{white-space:normal;overflow-wrap:anywhere;text-align:left}.insight-evidence li span{min-width:0;overflow-wrap:anywhere}}
 
 @media(max-width:900px){.timeline{overflow-x:auto;grid-template-columns:repeat(30,minmax(18px,1fr));padding-bottom:8px}}
+
+/* Green-status markers and their swatches, scoped to Month at a glance. */
+.timeline-card #timeline-legend .legend.teal-bg{background:#50a66a}
 
 /* Desktop Patients page geometry, scoped to the directory view. */
 @media(min-width:651px){body:has(#patient-list-page:not(.hidden))>main>header{height:64px;font-size:16px}body:has(#patient-list-page:not(.hidden)) .breadcrumb span:nth-of-type(2),body:has(#patient-list-page:not(.hidden)) .breadcrumb #crumb{display:none}body:has(#patient-list-page:not(.hidden))>main>header .header-right{font-size:13px}#patient-list-page{padding-top:14px}.patient-list-heading h1{font-size:40px;line-height:1.05;margin:13px 0 9px}.patient-list-heading{margin-bottom:27px}}
