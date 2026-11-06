@@ -1,0 +1,29 @@
+.care-alert-card-action{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap}
+.care-alert-card-button{min-height:42px;padding:9px 16px;border:1px solid #c9b7d6;border-radius:9px;background:#faf7fc;color:#624778;font:600 14px 'DM Sans',sans-serif}
+.care-alert-card-button:hover,.care-alert-card-button:focus-visible{background:#f0e9f5;border-color:#a990be}
+.care-alert-card-button.is-requested{background:#f0e9f5}
+.care-alert-card-status{color:#675879;font-size:12px;font-weight:600}
+.care-alert-dialog{width:min(92vw,510px);max-width:510px;padding:27px 30px;border-color:#e1d6e8;border-radius:16px}
+.care-alert-dialog h2{margin:8px 36px 16px 0;color:#352841;font-size:21px}
+.care-alert-patient{display:flex;flex-direction:column;gap:3px;padding:11px 13px;border:1px solid #e8e0ed;border-radius:9px;background:#faf8fc}
+.care-alert-patient strong{color:#352841;font-size:16px}
+.care-alert-patient small,.care-alert-simulation{color:#786f80;font-size:12px}
+.care-alert-field{margin:15px 0;color:#51445d;font-size:14px}
+.care-alert-field>span,.care-alert-status>span{display:block;margin-bottom:5px;color:#746781;font-size:12px;font-weight:700}
+.care-alert-field>strong{font-weight:600}
+.care-alert-field ul{margin:6px 0 0;padding-left:20px}
+.care-alert-field li{margin:4px 0;line-height:1.45}
+.care-alert-explanation{margin:15px 0 8px;padding:10px 12px;border-left:3px solid #8b6aa5;border-radius:5px;background:#f6f1f8;color:#4d3c5a;font-size:13px;line-height:1.5}
+.care-alert-simulation{margin:9px 0 14px;line-height:1.45}
+.care-alert-status{display:grid;grid-template-columns:1fr auto;align-items:center;gap:2px 12px;padding:10px 12px;border:1px solid #e3d9e9;border-radius:8px;background:#fbf9fc}
+.care-alert-status>span{grid-column:1/-1;margin:0}
+.care-alert-status strong{color:#624778;font-size:14px}
+.care-alert-status small{color:#81768a;font-size:11px}
+.care-alert-confirmation{margin:12px 0;padding:10px 12px;border:1px solid #c6ddce;border-radius:8px;background:#f0f7f2;color:#2f6544;font-size:13px;font-weight:600;line-height:1.45}
+.care-alert-dialog-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}
+.care-alert-dialog-actions button{min-height:40px;padding:9px 15px;border-radius:8px;font:600 13px 'DM Sans',sans-serif}
+.care-alert-primary{border:1px solid #684d81;background:#684d81;color:#fff}
+.care-alert-primary:hover,.care-alert-primary:focus-visible{background:#543a6c}
+.care-alert-cancel{border:1px solid #ded3e8;background:#fff;color:#604779}
+.care-alert-cancel:hover,.care-alert-cancel:focus-visible{background:#f4eef8}
+@media(max-width:560px){.care-alert-dialog{padding:22px 20px}.care-alert-card-button{min-height:38px;padding:8px 12px;font-size:13px}.care-alert-dialog-actions{flex-wrap:wrap}.care-alert-dialog-actions button{flex:1}}

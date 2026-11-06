@@ -1,12 +1,14 @@
 const fs = require('fs');
 const vm = require('vm');
 const assert = require('assert');
+const {createCareAlertStore}=require('./dist/care-alerts.js');
 const elements = new Map();
 function element(id) {
-  if (!elements.has(id)) elements.set(id, {innerHTML:'',textContent:'',value:id==='specialty'?'Pulmonology':'',style:{},classList:{toggle(){},add(){},remove(){}},addEventListener(){},querySelectorAll(){return[]},querySelector(){return element('child')},getAttribute(){return'false'},setAttribute(){},removeAttribute(){},showModal(){},close(){}});
+  if (!elements.has(id)) elements.set(id, {innerHTML:'',textContent:'',value:id==='specialty'?'Pulmonology':'',style:{},classList:{toggle(){},add(){},remove(){}},addEventListener(){},querySelectorAll(){return[]},querySelector(selector){return element(`${id}:${selector}`)},getAttribute(){return'false'},setAttribute(){},removeAttribute(){},showModal(){},close(){}});
   return elements.get(id);
 }
-const context = vm.createContext({document:{getElementById:element,querySelector:()=>element('close'),querySelectorAll:()=>[]},console,Blob,URL,setTimeout,assert});
+const mockCareAlerts={get:()=>null};
+const context = vm.createContext({document:{getElementById:element,querySelector:()=>element('close'),querySelectorAll:()=>[],addEventListener(){}},window:{VitalyxCareAlerts:mockCareAlerts},console,Blob,URL,setTimeout,assert});
 vm.runInContext(fs.readFileSync('dist/app.js','utf8'),context);
 vm.runInContext(`
 for (const key of Object.keys(patients)) {
@@ -135,6 +137,7 @@ vm.runInContext('renderPatientDirectory()',context);
 assert(element('patient-roster-list').innerHTML.includes('No comparison cue'));
 assert(element('patient-roster-list').innerHTML.includes('check recent stream coverage'));
 assert(element('patient-roster-list').innerHTML.includes('device readings 0/7'));
+assert(!element('priority-spotlight').innerHTML.includes('Notify Care Team'),'Patients without follow-up cues should not show the alert button');
 context.auditFixture=reviewFixture;
 vm.runInContext('renderPatientDirectory()',context);
 const directoryMarkup=element('patient-roster-list').innerHTML;
@@ -145,11 +148,40 @@ assert(directoryMarkup.indexOf('Symptoms reported on')>directoryMarkup.indexOf('
 const expectedFirst=vm.runInContext("Object.entries(patients).map(([key,p])=>({key,p,...recentReviewSignals(key)})).sort(comparePatientPriority)[0].p.name",context);
 const spotlight=element('priority-spotlight').innerHTML;
 assert(spotlight.includes('Needs review now')&&spotlight.includes('spotlight-warning-icon')&&spotlight.includes(expectedFirst),'Warning badge and spotlight identity must follow the dynamically sorted first patient');
-assert.equal((directoryMarkup.match(/class="priority-row"/g)||[]).length,2,'Only the non-spotlight patients belong in the secondary list');
+assert(spotlight.includes('Notify Care Team'),'Prioritized patients with follow-up cues should show the notify action');
+assert.equal((directoryMarkup.match(/class="priority-row"/g)||[]).length,vm.runInContext('Object.keys(patients).length-1',context),'Only the non-spotlight patients belong in the secondary list');
 assert(spotlight.includes('class="spotlight-metric trend-bad" role="img" aria-label="Unfavorable decrease in accepted FEV1.'),'Falling accepted FEV1 must use the unfavorable/red state');
 const improvingFixture=reviewFixture.map((day,i)=>i>=7?{...day,symptoms:[],readings:[{fev:3.1+(i-7)*.05,quality:'accepted'}]}:day);
 context.auditFixture=improvingFixture;
 vm.runInContext('renderPatientDirectory()',context);
 const improvingSpotlight=element('priority-spotlight').innerHTML;
 assert(improvingSpotlight.includes('class="spotlight-metric trend-good" role="img" aria-label="Favorable increase in accepted FEV1.'),'Rising accepted FEV1 should use the favorable/green state');
+mockCareAlerts.get=()=>({status:'pending'});vm.runInContext('renderPatientDirectory()',context);
+assert(element('priority-spotlight').innerHTML.includes('Review Requested')&&element('priority-spotlight').innerHTML.includes('Pending Review'),'A pending request should be visible on the patient card');
+mockCareAlerts.get=()=>({status:'acknowledged'});vm.runInContext('renderPatientDirectory()',context);
+assert(element('priority-spotlight').innerHTML.includes('Acknowledged'),'An acknowledged request should be visible on the patient card');
 console.log('Passed: directory cues use paired 7-day denominators, accepted daily-best medians with sample counts, consecutive tracker gaps, stream coverage, and cue-count/frequency sorting.');
+
+const persistedAlerts={value:null,getItem(){return this.value},setItem(key,value){this.value=String(value)}};
+const careAlertStore=createCareAlertStore(persistedAlerts,()=>new Date('2026-11-06T17:00:00.000Z'));
+context.window.VitalyxCareAlerts=careAlertStore;context.auditFixture=reviewFixture;
+vm.runInContext('renderPatientDirectory()',context);
+const alertPatient=vm.runInContext("Object.entries(patients).map(([key,p])=>({key,p,...recentReviewSignals(key),days:dataset(key)})).sort(comparePatientPriority)[0]",context);
+assert(alertPatient.signals.length>0,'The simulated workflow fixture should include a patient with follow-up cues');
+element('priority-spotlight:.care-alert-card-button').onclick();
+assert(element('care-alert-content').innerHTML.includes(alertPatient.p.name)&&element('care-alert-content').innerHTML.includes('Care Team / Triage Nurse'));
+assert(element('care-alert-content').innerHTML.includes('This notification requests clinical review. It is not an emergency alert.'));
+element('care-alert-send').onclick();
+assert.equal(careAlertStore.get(alertPatient.p.id).status,'pending');
+assert(element('care-alert-content').innerHTML.includes('Review request created and assigned to Care Team.'));
+assert(element('care-alert-content').innerHTML.includes('Pending Review'));
+assert(element('priority-spotlight').innerHTML.includes('Review Requested'));
+element('care-alert-acknowledge').onclick();
+assert.equal(careAlertStore.get(alertPatient.p.id).status,'acknowledged');
+assert(element('care-alert-content').innerHTML.includes('Acknowledged'));
+assert(element('priority-spotlight').innerHTML.includes('Acknowledged'));
+const refreshedAlertStore=createCareAlertStore(persistedAlerts,()=>new Date('2026-11-06T18:00:00.000Z'));
+context.window.VitalyxCareAlerts=refreshedAlertStore;vm.runInContext('renderPatientDirectory()',context);
+assert.equal(refreshedAlertStore.get(alertPatient.p.id).status,'acknowledged');
+assert(element('priority-spotlight').innerHTML.includes('Acknowledged'),'Acknowledgement should remain visible after refresh');
+console.log('Passed: Notify → Send → Pending Review → Acknowledge → refresh using localStorage-backed state.');

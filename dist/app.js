@@ -131,7 +131,7 @@ function renderPatientDirectory(query=''){
 }
 function showDirectory(){ $('patient-page').classList.add('hidden');$('patient-list-page').classList.remove('hidden');$('catalog-page').classList.add('hidden');$('crumb').textContent='Patient priorities';setActivePage('patients');renderPatientDirectory($('patient-search').value); }
 function modal(html){$('detail-content').innerHTML=html;$('detail').showModal();}
-document.querySelector('.close').onclick=()=>$('detail').close();$('detail').addEventListener('click',e=>{if(e.target===$('detail'))$('detail').close()});
+$('detail').querySelector('.close').onclick=()=>$('detail').close();$('detail').addEventListener('click',e=>{if(e.target===$('detail'))$('detail').close()});
 function renderSymptomCalendar(days){
   const symptomNames=['Coughing','Wheezing','Shortness of breath','Chest tightness'];
   const monthGroups=[];
@@ -370,6 +370,35 @@ function renderPrioritySpotlight(entry){
   $('priority-spotlight').querySelector('[data-open-priority-patient]').onclick=()=>openPatient(key);
   $('priority-spotlight').querySelector('.spotlight-evidence-toggle').onclick=()=>{const disclosure=$('spotlight-evidence');disclosure.open=true;disclosure.scrollIntoView({block:'nearest',behavior:'smooth'});};
 }
+const renderPrioritySpotlightBase=renderPrioritySpotlight;
+function escapeCareAlertText(value){return String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));}
+function renderCareAlertDialog(key,signals=[],notice=''){
+  const patient=patients[key],alert=window.VitalyxCareAlerts.get(patient.id),reason=alert?.reason||signals.map(signal=>signal.text),dialog=$('care-alert-dialog');
+  const status=alert?.status==='acknowledged'?'Acknowledged':'Pending Review';
+  $('care-alert-content').innerHTML=`<div class="eyebrow">SIMULATED CARE TEAM WORKFLOW</div><h2 id="care-alert-heading">Care team review request</h2><div class="care-alert-patient"><strong>${escapeCareAlertText(patient.name)}</strong><small>Fictional patient data · ID ${escapeCareAlertText(patient.id)}</small></div><div class="care-alert-field"><span>Reason for alert</span><ul>${reason.map(item=>`<li>${escapeCareAlertText(item)}</li>`).join('')}</ul></div><div class="care-alert-field"><span>Alert recipient</span><strong>Care Team / Triage Nurse</strong></div><p class="care-alert-explanation">This notification requests clinical review. It is not an emergency alert.</p><p class="care-alert-simulation">Simulated workflow using synthetic patient data. No real notifications or patient information are transmitted.</p>${alert?`<div class="care-alert-status" role="status"><span>Status</span><strong>${status}</strong>${alert.createdAt?`<small>Requested ${new Date(alert.createdAt).toLocaleString()}</small>`:''}</div>`:''}${notice?`<p class="care-alert-confirmation" role="status">${escapeCareAlertText(notice)}</p>`:''}<div class="care-alert-dialog-actions">${!alert?'<button class="care-alert-primary" id="care-alert-send" type="button">Send for Review</button>':alert.status==='pending'?'<button class="care-alert-primary" id="care-alert-acknowledge" type="button">Acknowledge as Care Team</button>':''}<button class="care-alert-cancel" id="care-alert-cancel" type="button">Cancel</button></div>`;
+  if(!dialog.open)dialog.showModal();
+  $('care-alert-cancel').onclick=()=>dialog.close();
+  const send=$('care-alert-send');if(send)send.onclick=()=>{
+    const result=window.VitalyxCareAlerts.request({patientId:patient.id,patientName:patient.name,reason,recipient:'Care Team / Triage Nurse'});
+    if(!result.saved){renderCareAlertDialog(key,signals,'Could not save the review request in this browser. Please try again.');return;}
+    renderPatientDirectory($('patient-search').value);
+    renderCareAlertDialog(key,signals,result.created?'Review request created and assigned to Care Team.':'An existing review request is already pending.');
+  };
+  const acknowledge=$('care-alert-acknowledge');if(acknowledge)acknowledge.onclick=()=>{
+    const result=window.VitalyxCareAlerts.acknowledge(patient.id);
+    if(!result.saved){renderCareAlertDialog(key,signals,'Could not save the acknowledgement in this browser. Please try again.');return;}
+    renderPatientDirectory($('patient-search').value);
+    renderCareAlertDialog(key,signals,result.changed?'Review request acknowledged by Care Team.':'This request has already been acknowledged.');
+  };
+}
+renderPrioritySpotlight=function(entry){
+  renderPrioritySpotlightBase(entry);
+  if(!entry||!entry.signals?.length)return;
+  const {key,p,signals}=entry,alert=window.VitalyxCareAlerts.get(p.id),label=alert?.status==='acknowledged'?'Acknowledged':alert?'Review Requested':'Notify Care Team',card=$('priority-spotlight'),actionMarkup=`<div class="care-alert-card-action"><button class="care-alert-card-button${alert?' is-requested':''}" type="button" aria-label="${label} for ${escapeCareAlertText(p.name)}">${label}</button>${alert?`<span class="care-alert-card-status" role="status">${alert.status==='acknowledged'?'Acknowledged':'Pending Review'}</span>`:''}</div>`;
+  card.innerHTML=card.innerHTML.replace('</button></div><details class="spotlight-evidence"',`</button>${actionMarkup}</div><details class="spotlight-evidence"`);
+  card.querySelector('.care-alert-card-button').onclick=()=>renderCareAlertDialog(key,signals);
+};
+document.querySelector('#care-alert-close').onclick=()=>$('care-alert-dialog').close();
 renderPatientDirectory=function(query=''){
   $('patient-count').textContent=String(Object.keys(patients).length).padStart(2,'0');
   $('crumb').textContent='Patient priorities';setActivePage('patients');
