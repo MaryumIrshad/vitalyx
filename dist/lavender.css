@@ -167,3 +167,5 @@ dialog{border-color:#e4dce9;color:#352841;background:#fff}dialog::backdrop{backg
 .patient-side-panel .preview-stats div{padding:13px 9px}.patient-side-panel .preview-stats strong{font:700 26px/1.12 Manrope,sans-serif}.patient-side-panel .preview-stats small{display:block;margin-top:4px;color:#786f80;font-size:14px;line-height:1.25}.patient-side-panel .preview-note{margin:2px 0}.patient-side-panel .preview-open{min-height:56px;font-size:16px}
 
 .chart-key.rescue-use{background:#e87938}.chart-key.rescue-none{background:#e5f3ec;border:1px solid #3b9870}.chart-key.rescue-unknown{background:#f0edf4;border:1px dashed #9aa3af}
+
+.patient-id-line{font-size:12px!important;color:#604779!important;letter-spacing:.01em}.patient-id-line strong{font-weight:750}.spotlight-avatar.avatar-taylor,.priority-avatar.avatar-taylor{background:#70538c;box-shadow:0 0 0 4px #e8dff0}.spotlight-avatar.avatar-riley,.priority-avatar.avatar-riley{background:#507fac;box-shadow:0 0 0 4px #dce7f1}.preview-top [data-color=taylor]{background:#70538c;color:#fff;border-color:#fff}.preview-top [data-color=riley]{background:#507fac;color:#fff;border-color:#fff}
