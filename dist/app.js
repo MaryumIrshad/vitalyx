@@ -396,6 +396,8 @@ renderPrioritySpotlight=function(entry){
   if(!entry||!entry.signals?.length)return;
   const {key,p,signals}=entry,alert=window.VitalyxCareAlerts.get(p.id),pending=alert?.status==='pending',label=pending?'Review Requested':'Notify Care Team',card=$('priority-spotlight'),actionMarkup=`<div class="care-alert-card-action"><button class="care-alert-card-button${pending?' is-requested':''}" type="button" aria-label="${label} for ${escapeCareAlertText(p.name)}">${label}</button>${alert?`<span class="care-alert-card-status" role="status">${pending?'Pending Review':'Acknowledged'}</span>`:''}</div>`;
   card.innerHTML=card.innerHTML.replace('</button></div><details class="spotlight-evidence"',`</button>${actionMarkup}</div><details class="spotlight-evidence"`);
+  card.querySelector('[data-open-priority-patient]').onclick=()=>openPatient(key);
+  card.querySelector('.spotlight-evidence-toggle').onclick=()=>{const disclosure=$('spotlight-evidence');disclosure.open=true;disclosure.scrollIntoView({block:'nearest',behavior:'smooth'});};
   card.querySelector('.care-alert-card-button').onclick=()=>renderCareAlertDialog(key,signals);
 };
 document.querySelector('#care-alert-close').onclick=()=>$('care-alert-dialog').close();

@@ -194,4 +194,8 @@ const refreshedAgain=createCareAlertStore(persistedAlerts,()=>new Date('2026-11-
 context.window.VitalyxCareAlerts=refreshedAgain;vm.runInContext('renderPatientDirectory()',context);
 assert.equal(refreshedAgain.get(alertPatient.p.id).status,'pending');
 assert(element('priority-spotlight').innerHTML.includes('Review Requested'),'A new request should remain pending after refresh');
+assert.equal(typeof element('priority-spotlight:[data-open-priority-patient]').onclick,'function','Open patient view handler should survive alert-card updates');
+assert.equal(typeof element('priority-spotlight:.spotlight-evidence-toggle').onclick,'function','See evidence handler should survive alert-card updates');
+element('priority-spotlight:[data-open-priority-patient]').onclick();
+assert(element('crumb').textContent.includes(alertPatient.p.id),'Open patient view should navigate to that patient');
 console.log('Passed: Notify → Send → Pending Review → Acknowledge → refresh → Notify again → Send.');
