@@ -11,8 +11,10 @@
       request({patientId,patientName,reason,recipient='Care Team / Triage Nurse'}){
         if(!patientId)throw new Error('A patient ID is required to create a review request.');
         const records=read(),existing=records[patientId];
-        if(existing)return {alert:existing,created:false,saved:true};
-        const alert={patientId,patientName,reason:Array.isArray(reason)?reason:[String(reason||'')],recipient,status:'pending',createdAt:clock().toISOString()};
+        if(existing?.status==='pending')return {alert:existing,created:false,saved:true};
+        const history=[...(existing?.history||[])];
+        if(existing)history.push({status:existing.status,reason:existing.reason,recipient:existing.recipient,createdAt:existing.createdAt,acknowledgedAt:existing.acknowledgedAt});
+        const alert={patientId,patientName,reason:Array.isArray(reason)?reason:[String(reason||'')],recipient,status:'pending',createdAt:clock().toISOString(),history};
         records[patientId]=alert;return {alert,created:true,saved:write(records)};
       },
       acknowledge(patientId){

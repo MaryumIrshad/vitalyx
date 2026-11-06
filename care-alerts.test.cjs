@@ -34,6 +34,19 @@ test('acknowledgement persists across a newly initialized store (page refresh)',
   assert.equal(afterRefresh.acknowledge('VY-104').changed,false);
 });
 
+test('allows a fresh request after acknowledgement while blocking pending duplicates',()=>{
+  const storage=memoryStorage(),times=[new Date('2026-11-06T17:00:00.000Z'),new Date('2026-11-06T17:01:00.000Z'),new Date('2026-11-06T17:02:00.000Z')];
+  const store=createCareAlertStore(storage,()=>times.shift());
+  const first=store.request({patientId:'VY-104',patientName:'Fictional Patient',reason:['Symptoms increased']});
+  store.acknowledge('VY-104');
+  const next=store.request({patientId:'VY-104',patientName:'Fictional Patient',reason:['Accepted FEV1 decreased']});
+  assert.equal(next.created,true);assert.equal(next.alert.status,'pending');
+  assert.equal(next.alert.reason[0],'Accepted FEV1 decreased');
+  assert.equal(next.alert.history.length,1);assert.equal(next.alert.history[0].status,'acknowledged');
+  assert.equal(next.alert.history[0].createdAt,first.alert.createdAt);
+  assert.equal(store.request({patientId:'VY-104',patientName:'Fictional Patient',reason:['Another cue']}).created,false);
+});
+
 test('handles malformed stored data and rejects missing patient IDs safely',()=>{
   const store=createCareAlertStore(memoryStorage('{broken json'));
   assert.equal(store.get('VY-104'),null);
