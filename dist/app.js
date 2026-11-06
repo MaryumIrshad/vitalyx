@@ -232,6 +232,23 @@ $('patient-search').oninput=e=>renderPatientDirectory(e.target.value);
 document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('selected',x===b));['overview','all-charts','plan'].forEach(id=>$(id).classList.toggle('hidden',id!==b.dataset.tab))});
 $('patient-mode').onclick=()=>{const r=rows(),logged=r.filter(d=>!d.missing),n=logged.filter(d=>d.symptoms.length).length,missing=period-logged.length;modal(`<div class="eyebrow">LET’S LOOK TOGETHER</div><h2>Your last ${period} days at home</h2><p>You checked in on <strong>${logged.length} days</strong>. You reported symptoms on <strong>${n} of those days</strong>.</p><p>There ${missing===1?'is':'are'} ${missing} ${missing===1?'day':'days'} without check-ins, so we don't know how ${missing===1?'that day went':'those days went'}.</p><h3>What was going on for you?</h3><p>Which days felt hardest? How did taking and recording your medication fit into your routine? What would make tracking easier?</p><p>These are fictional examples for a design demonstration.</p>`)};
 $('about').onclick=()=>modal('<div class="eyebrow">ABOUT THIS VIEW</div><h2>Home data, ready for a conversation.</h2><p>A VITALYX clinician-view design based on the supplied hackathon brief. All patients, medications, readings, and schedules are fictional.</p><p>Interactive date ranges, specialty prompts, patient switching, daily reviews, patient discussion mode, and CSV export work locally. This is not a clinical system and has no Epic integration.</p>');
+$('export-pdf').onclick=()=>{
+  const ids=['patient-list-page','patient-page','catalog-page','overview','all-charts','plan','all-charts-detail'];
+  const previous=Object.fromEntries(ids.map(id=>[id,$(id).classList.contains('hidden')]));
+  const patient=patients[current],days=rows();
+  $('pdf-report-name').textContent=`${patient.name} | ${patient.id}`;
+  $('pdf-report-period').textContent=`${fmt(days[0].date)}–${fmt(days.at(-1).date)}, 2026 · ${period} days · Generated ${new Intl.DateTimeFormat('en-US',{dateStyle:'medium'}).format(new Date())}`;
+  $('patient-list-page').classList.add('hidden');$('catalog-page').classList.add('hidden');$('patient-page').classList.remove('hidden');
+  $('overview').classList.remove('hidden');$('all-charts').classList.remove('hidden');$('plan').classList.add('hidden');$('all-charts-detail').classList.add('hidden');
+  document.body.classList.add('print-report');
+  let restored=false;
+  const restore=()=>{
+    if(restored)return;restored=true;document.body.classList.remove('print-report');
+    ids.forEach(id=>$(id).classList.toggle('hidden',previous[id]));
+  };
+  window.addEventListener('afterprint',restore,{once:true});
+  requestAnimationFrame(()=>{window.print();restore();});
+};
 $('export').onclick=()=>{
   const header=['date','patient','patient_id','tracker_submitted','tracker_entries','symptoms','medication_reported','controller_doses_marked_taken_self_report','scheduled_slots_on_report_days','reading_time','fev1_liters','device_quality','recorded_zone','rescue_report','school_days_missed'];
   const records=rows().flatMap(d=>(d.readings.length?d.readings:[null]).map(reading=>[d.date,patients[current].name,patients[current].id,d.trackerSubmitted,d.submissions,d.trackerSubmitted?d.symptoms.join('; ')||'none reported':'unknown',d.medicationReported,d.medicationReported?d.doses:'',d.medicationReported?2:'',reading?.time??'',reading?.fev??'',reading?.quality??'no reading',d.zone,d.medicationReported?d.rescue:'',d.trackerSubmitted?d.school:'']));

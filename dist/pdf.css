@@ -1,0 +1,52 @@
+.pdf-report-heading{display:none}
+
+@page{size:A3 landscape;margin:12mm}
+@media print{
+  body.print-report{background:#fff!important;color:#30263a!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body.print-report>.sidebar,
+  body.print-report>main>header,
+  body.print-report #patient-list-page,
+  body.print-report #catalog-page,
+  body.print-report #plan,
+  body.print-report .toolbar,
+  body.print-report .patient-heading,
+  body.print-report .period-line,
+  body.print-report #patient-mode,
+  body.print-report #all-charts-detail,
+  body.print-report dialog{display:none!important}
+  body.print-report>main{max-width:none!important;margin:0!important;padding:0!important}
+  body.print-report #patient-page,
+  body.print-report #overview,
+  body.print-report #all-charts{display:block!important;visibility:visible!important}
+  body.print-report .pdf-report-heading{display:block;margin:0 0 12mm;padding:0 0 5mm;border-bottom:1px solid #e1d7e8}
+  body.print-report .pdf-report-heading h1{font-size:22pt;margin:3mm 0 1mm}
+  body.print-report .pdf-report-heading p{display:inline;margin:0 10mm 0 0;font-size:10pt;color:#665c70}
+  body.print-report .pdf-report-heading>span{font-size:9pt;color:#665c70}
+  body.print-report .clinical-insights-panel,
+  body.print-report .minute-summary,
+  body.print-report .card,
+  body.print-report .timeline-card,
+  body.print-report .quality,
+  body.print-report .all-charts-card{break-inside:avoid;box-shadow:none!important}
+  body.print-report .chart-grid,
+  body.print-report .lower-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:5mm}
+  body.print-report .chart svg{height:58mm}
+  body.print-report .timeline{gap:1.5mm}
+  body.print-report .day i{height:7mm}
+  body.print-report #all-charts{break-before:page;margin-top:0}
+  body.print-report .all-charts-heading{margin-top:0}
+  body.print-report .all-charts-card{padding:4mm}
+  body.print-report .all-charts-scroll{overflow:visible!important;max-width:none!important}
+  body.print-report .all-charts-svg{display:block;width:100%!important;max-width:100%!important;height:auto!important;overflow:visible}
+  body.print-report .all-charts-legend{font-size:8pt}
+  body.print-report .all-charts-note{font-size:8pt}
+  body.print-report details>:not(summary){display:block!important}
+  body.print-report details:not([open])>:not(summary){display:block!important}
+  body.print-report #logs{break-before:page}
+  body.print-report .table-scroll{overflow:visible!important}
+  body.print-report table{font-size:8.5pt}
+  body.print-report thead{display:table-header-group}
+  body.print-report tr{break-inside:avoid}
+  body.print-report footer{break-inside:avoid;border-top:1px solid #e1d7e8;margin-top:5mm}
+  body.print-report .hidden{display:none!important}
+}
