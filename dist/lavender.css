@@ -169,3 +169,5 @@ dialog{border-color:#e4dce9;color:#352841;background:#fff}dialog::backdrop{backg
 
 .patient-id-line{font-size:12px!important;color:#604779!important;letter-spacing:.01em}.patient-id-line strong{font-weight:750}.spotlight-avatar.avatar-taylor,.priority-avatar.avatar-taylor{background:#70538c;box-shadow:0 0 0 4px #e8dff0}.spotlight-avatar.avatar-riley,.priority-avatar.avatar-riley{background:#507fac;box-shadow:0 0 0 4px #dce7f1}.preview-top [data-color=taylor]{background:#70538c;color:#fff;border-color:#fff}.preview-top [data-color=riley]{background:#507fac;color:#fff;border-color:#fff}
 .legend.threshold-low{width:16px;height:0;border-top:2px dashed #d66e31;border-radius:0;vertical-align:middle}.legend.threshold-high{width:16px;height:0;border-top:2px dotted #4e7eaf;border-radius:0;vertical-align:middle}
+
+.chart-key.threshold-low{width:16px;height:0;background:transparent;border-top:2px dashed #d66e31;border-radius:0}.chart-key.threshold-high{width:16px;height:0;background:transparent;border-top:2px dotted #4e7eaf;border-radius:0}
