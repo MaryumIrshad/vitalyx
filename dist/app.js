@@ -1,6 +1,6 @@
 const $=id=>document.getElementById(id);
 const patients={alex:{name:'Alex Morgan',age:16,seed:0,personalBest:3.12},jordan:{name:'Jordan Lee',age:14,seed:3,personalBest:3.22},sam:{name:'Sam Rivera',age:17,seed:7,personalBest:3.34}};
-let current='alex',period=15;
+let current='alex',period=15,selectedSymptomDate=null;
 function dataset(key){
   const s=patients[key].seed;
   return Array.from({length:30},(_,i)=>{
@@ -132,6 +132,7 @@ function showDirectory(){ $('patient-page').classList.add('hidden');$('patient-l
 function modal(html){$('detail-content').innerHTML=html;$('detail').showModal();}
 document.querySelector('.close').onclick=()=>$('detail').close();$('detail').addEventListener('click',e=>{if(e.target===$('detail'))$('detail').close()});
 function renderSymptomCalendar(days){
+  const symptomNames=['Coughing','Wheezing','Shortness of breath','Chest tightness'];
   const monthGroups=[];
   for(const day of days){
     const label=new Intl.DateTimeFormat('en-US',{month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(`${day.date}T12:00:00Z`));
@@ -142,13 +143,31 @@ function renderSymptomCalendar(days){
   const columns=`112px repeat(${days.length},minmax(18px,1fr))`,minWidth=`${112+days.length*19}px`;
   const monthHeader=monthGroups.map(group=>`<div class="symptom-calendar-month" style="grid-column:span ${group.span}">${group.label}</div>`).join('');
   const dates=days.map(day=>`<div class="symptom-calendar-date" title="${fmt(day.date)}, ${day.date.slice(0,4)}">${Number(day.date.slice(-2))}</div>`).join('');
-  const cells=days.map(day=>{
-    const tracker=day.trackerSubmitted??!day.missing,hasSymptoms=day.symptoms.length>0;
-    const state=!tracker?'unknown':hasSymptoms?'reported':'clear';
-    const summary=!tracker?'No tracker entry; symptom status unknown':hasSymptoms?`Symptoms reported: ${day.symptoms.join(', ')}`:'No symptoms reported';
-    return `<button type="button" class="symptom-calendar-cell symptom-${state}" data-date="${day.date}" aria-label="${fmt(day.date)}, ${day.date.slice(0,4)}: ${summary}. Open daily details" title="${fmt(day.date)}, ${day.date.slice(0,4)}: ${summary}"><i aria-hidden="true"></i></button>`;
-  }).join('');
-  return `<div class="symptom-calendar-scroll" role="region" aria-label="Daily symptom calendar; select a day to open its details"><div class="symptom-calendar-grid" aria-label="Symptoms by day" style="grid-template-columns:${columns};min-width:${minWidth}"><div class="symptom-calendar-month-label">Month</div>${monthHeader}<div class="symptom-calendar-row-label">Day</div>${dates}<div class="symptom-calendar-row-label">Symptoms</div>${cells}</div></div><div class="symptom-calendar-legend" aria-label="Calendar legend"><span><i class="symptom-dot reported"></i>Symptoms reported</span><span><i class="symptom-dot clear"></i>No symptoms reported</span><span><i class="symptom-dot unknown"></i>No tracker entry</span></div>`;
+  const symptomRows=symptomNames.map(symptom=>`<div class="symptom-calendar-row-label">${symptom}</div>${days.map(day=>{
+    const tracker=day.trackerSubmitted??!day.missing,reported=day.symptoms.includes(symptom);
+    const state=!tracker?'unknown':reported?'reported':'clear';
+    const summary=!tracker?'No tracker entry; symptom status unknown':reported?`${symptom} reported`:`${symptom} not reported in submitted tracker`;
+    return `<button type="button" class="symptom-calendar-cell symptom-${state}" data-date="${day.date}" aria-label="${fmt(day.date)}, ${day.date.slice(0,4)}: ${summary}. Select date for details" title="${fmt(day.date)}, ${day.date.slice(0,4)}: ${summary}"><i aria-hidden="true"></i></button>`;
+  }).join('')}`).join('');
+  return `<div class="symptom-calendar-scroll" role="region" aria-label="Daily symptoms calendar; select a date to show its details on the right"><div class="symptom-calendar-grid" aria-label="Symptoms by day" style="grid-template-columns:${columns};min-width:${minWidth}"><div class="symptom-calendar-month-label">Month</div>${monthHeader}<div class="symptom-calendar-row-label">Day</div>${dates}${symptomRows}</div></div><div class="symptom-calendar-legend" aria-label="Calendar legend"><span><i class="symptom-dot reported"></i>Reported</span><span><i class="symptom-dot clear"></i>Not reported on a submitted tracker</span><span><i class="symptom-dot unknown"></i>No tracker entry</span></div>`;
+}
+function renderSelectedDayPanel(date){
+  const day=dataset(current).find(item=>item.date===date),panel=$('selected-day-panel');
+  if(!panel)return;
+  if(!day){panel.innerHTML='<p>Select a calendar date to review its records.</p>';return;}
+  const tracker=day.trackerSubmitted??!day.missing,best=bestAccepted(day),year=day.date.slice(0,4);
+  const symptoms=tracker?(day.symptoms.length?day.symptoms.join(', '):'No symptoms reported'):'Unknown; no tracker submission';
+  const feeling=tracker?(day.feeling||'Not reported'):'Unknown; no tracker submission';
+  const school=tracker?(Number.isFinite(day.school)?`${day.school} day${day.school===1?'':'s'} reported`:'Not reported'):'Unknown; no tracker submission';
+  const zone=tracker&&day.zone!=='unknown'?day.zone[0].toUpperCase()+day.zone.slice(1):'Unknown';
+  const medication=day.medicationReported?`Controller doses marked taken: ${Number.isFinite(day.doses)?`${day.doses} of 2`:'not reported'}<br>Rescue medication reported: ${Number.isFinite(day.rescue)?day.rescue:'not reported'}`:'No medication report recorded; dose status unknown';
+  const readings=day.readings.length?day.readings.map((reading,index)=>`<div class="selected-day-reading"><span>${reading.time||`Reading ${index+1}`}</span><strong>${Number.isFinite(reading.fev)?`${reading.fev.toFixed(2)} L FEV1`:'FEV1 unavailable'}</strong><span class="reading-status ${reading.quality}">${reading.quality==='conflicting'?'Conflicting':reading.quality==='rejected'?'Rejected':'Accepted'}</span></div>`).join(''):'<p>No device readings recorded.</p>';
+  panel.innerHTML=`<div class="selected-day-date">${fmt(day.date)}, ${year}</div><div class="selected-day-group"><strong>Tracker & symptoms</strong><p>${day.submissions} submission${day.submissions===1?'':'s'} · ${symptoms}</p><p>Wellbeing: ${feeling}<br>School impact: ${school}<br>Recorded action-plan zone: ${zone}</p></div><div class="selected-day-group"><strong>Medication</strong><p>${medication}</p><small>Patient-reported; not verified administration.</small></div><div class="selected-day-group"><strong>Home spirometry</strong><p>${day.readings.length} reading${day.readings.length===1?'':'s'} · Daily best accepted FEV1: ${best?`${best.fev.toFixed(2)} L`:'not available'}</p>${readings}</div>`;
+}
+function selectSymptomCalendarDate(date){
+  selectedSymptomDate=date;
+  document.querySelectorAll('.symptom-calendar-cell').forEach(cell=>{const selected=cell.dataset.date===date;cell.classList.toggle('is-selected',selected);cell.setAttribute('aria-pressed',String(selected));});
+  renderSelectedDayPanel(date);
 }
 function detail(date){
   const d=dataset(current).find(x=>x.date===date),best=bestAccepted(d);
@@ -177,7 +196,7 @@ $('timeline').style.gridTemplateColumns=`repeat(${r.length},minmax(18px,1fr))`;$
   $('quality-title').textContent=`Data coverage & interpretation · ${stats.trackerDays}/${r.length} tracker days · ${excluded} FEV1 readings excluded from trend`;
   $('quality-content').innerHTML=`<p><strong>Tracker:</strong> ${stats.trackerDays}/${r.length} days with a tracker submission. Repeated submissions group as one day; symptoms use the union of answers and wellbeing uses the latest answer. No submission means tracker data are unknown.</p><p><strong>Medication:</strong> ${stats.medicationReportDays}/${r.length} days with a patient medication report; ${stats.controllerMarkedDoses}/${stats.controllerSlots} scheduled slots were marked taken among reporting days. These are self-reports, not verified administration. No report does not establish a missed dose.</p><p><strong>Device:</strong> ${stats.deviceReadingDays}/${r.length} days with readings; ${stats.acceptedAttempts} accepted and ${excluded} rejected or conflicting of ${stats.deviceAttempts} attempts. All attempts remain visible; accepted daily best values alone contribute to FEV1 summaries.</p><p><strong>Scope:</strong> All records are generated examples anchored to June 24, 2026. Summaries describe displayed data and are not diagnoses, treatment recommendations, or risk predictions.</p>`;
   $('log-body').innerHTML=[...r].reverse().map(d=>{const best=bestAccepted(d),excludedDay=d.readings.filter(v=>v.quality!=='accepted').length;return `<tr><td><button data-date="${d.date}">${fmt(d.date)}</button></td><td>${d.missing?'No tracker entry':d.symptoms.join(', ')||'None reported'}</td><td>${best?best.fev.toFixed(2)+' L':'—'}<br><small>${d.readings.length} readings${excludedDay?` · ${excludedDay} excluded`:''}</small></td><td>${d.medicationReported?`${d.doses}/2 marked taken (self-report)`:'No medication report'}</td><td>${d.zone==='unknown'?'Unknown':d.zone}</td><td>${d.submissions}</td></tr>`}).join('');
-document.querySelectorAll('[data-date]').forEach(el=>{el.onclick=()=>detail(el.dataset.date);if(el.tagName.toLowerCase()==='circle')el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();detail(el.dataset.date)}}});}
+document.querySelectorAll('[data-date]').forEach(el=>{el.onclick=()=>el.classList.contains('symptom-calendar-cell')?selectSymptomCalendarDate(el.dataset.date):detail(el.dataset.date);if(el.tagName.toLowerCase()==='circle')el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();detail(el.dataset.date)}}});}
 $('patient').onchange=e=>{current=e.target.value;render()};$('range').onchange=e=>{period=+e.target.value;render()};$('specialty').onchange=render;
 $('patient-search').oninput=e=>renderPatientDirectory(e.target.value);
 document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('selected',x===b));['overview','logs','plan'].forEach(id=>$(id).classList.toggle('hidden',id!==b.dataset.tab))});
@@ -369,5 +388,7 @@ function renderDailyLensChart(mode,r){
   }
   $('symptoms').querySelectorAll('.symptom-detail-toggle').forEach(button=>{button.onclick=()=>{const panel=$(button.getAttribute('aria-controls')),open=button.getAttribute('aria-expanded')!=='true';button.setAttribute('aria-expanded',String(open));panel.classList.toggle('hidden',!open);};});
   $('timeline').querySelectorAll('[data-date]').forEach(el=>el.onclick=()=>detail(el.dataset.date));$('lung-chart').querySelectorAll('[data-date]').forEach(el=>el.onclick=()=>detail(el.dataset.date));
+  if(!rows().some(day=>day.date===selectedSymptomDate))selectedSymptomDate=rows().at(-1)?.date??null;
+  if(selectedSymptomDate)selectSymptomCalendarDate(selectedSymptomDate);
 }const baseRender=render;render=function(){baseRender();renderSpecialtyLens();};$('specialty').onchange=render;
 render();showDirectory();

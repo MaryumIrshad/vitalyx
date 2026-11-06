@@ -137,6 +137,7 @@ dialog{border-color:#e4dce9;color:#352841;background:#fff}dialog::backdrop{backg
 .symptom-calendar-date{display:grid;place-items:center;height:26px;color:#786f80;font-size:12px}
 .symptom-calendar-cell{display:grid;place-items:center;width:100%;height:30px;padding:0;border:0;border-radius:5px;background:transparent}
 .symptom-calendar-cell:hover{background:#f5f1f7}
+.symptom-calendar-cell.is-selected{background:#eee7f4;box-shadow:inset 0 0 0 1px #806596}
 .symptom-calendar-cell:focus-visible{outline:2px solid #765b90;outline-offset:-1px}
 .symptom-calendar-cell i,.symptom-dot{display:inline-block;width:10px;height:10px;border-radius:50%}
 .symptom-calendar-cell.symptom-reported i,.symptom-dot.reported{background:#e29132}
@@ -145,6 +146,17 @@ dialog{border-color:#e4dce9;color:#352841;background:#fff}dialog::backdrop{backg
 .symptom-calendar-legend{display:flex;flex-wrap:wrap;gap:7px 16px;margin-top:9px;color:#786f80;font-size:12px}
 .symptom-calendar-legend span{display:inline-flex;align-items:center;gap:6px}
 .symptom-dot{width:9px;height:9px;flex:none}
+.selected-day-card .card-heading{margin-bottom:10px}
+.selected-day-date{margin:2px 0 9px;color:#352841;font:700 22px/1.2 Manrope,sans-serif}
+.selected-day-group{padding:10px 0;border-top:1px solid #e8e1ec;color:#51445b;font-size:13px;line-height:1.5}
+.selected-day-group>strong{color:#6d5482;font-size:13px}
+.selected-day-group p{margin:5px 0;font-size:13px;line-height:1.5}
+.selected-day-group small{color:#786f80;font-size:12px}
+.selected-day-reading{display:grid;grid-template-columns:62px minmax(0,1fr) auto;align-items:center;gap:8px;padding:4px 0;font-size:12px}
+.selected-day-reading .reading-status{font-size:12px}
+.selected-day-prompts{margin-top:10px;padding-top:12px;border-top:1px solid #e8e1ec}
+.selected-day-prompts h3{margin:0 0 4px;color:#352841;font-size:15px}
+.selected-day-prompts>p{margin:0;color:#786f80;font-size:12px}
 
 /* Desktop Patients page geometry, scoped to the directory view. */
 @media(min-width:651px){body:has(#patient-list-page:not(.hidden))>main>header{height:64px;font-size:16px}body:has(#patient-list-page:not(.hidden)) .breadcrumb span:nth-of-type(2),body:has(#patient-list-page:not(.hidden)) .breadcrumb #crumb{display:none}body:has(#patient-list-page:not(.hidden))>main>header .header-right{font-size:13px}#patient-list-page{padding-top:14px}.patient-list-heading h1{font-size:40px;line-height:1.05;margin:13px 0 9px}.patient-list-heading{margin-bottom:27px}}
