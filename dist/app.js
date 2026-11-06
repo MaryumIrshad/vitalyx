@@ -327,6 +327,7 @@ function renderPrioritySpotlight(entry){
   $('priority-spotlight').querySelector('.spotlight-evidence-toggle').onclick=()=>{const disclosure=$('spotlight-evidence');disclosure.open=true;disclosure.scrollIntoView({block:'nearest',behavior:'smooth'});};
 }
 renderPatientDirectory=function(query=''){
+  $('patient-count').textContent=String(Object.keys(patients).length).padStart(2,'0');
   $('crumb').textContent='Patient priorities';setActivePage('patients');
   const entries=Object.entries(patients).filter(([,p])=>`${p.name} ${p.id} asthma`.toLowerCase().includes(query.trim().toLowerCase())).map(([key,p])=>({key,p,...recentReviewSignals(key),days:dataset(key)})).sort(comparePatientPriority);
   const top=entries[0],others=entries.slice(1);
