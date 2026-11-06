@@ -144,7 +144,7 @@ assert(directoryMarkup.includes('<details class="priority-evidence">'));
 assert(directoryMarkup.indexOf('Symptoms reported on')>directoryMarkup.indexOf('<details class="priority-evidence">'),'Full cue evidence should be inside the collapsed disclosure');
 const expectedFirst=vm.runInContext("Object.entries(patients).map(([key,p])=>({key,p,...recentReviewSignals(key)})).sort(comparePatientPriority)[0].p.name",context);
 const spotlight=element('priority-spotlight').innerHTML;
-assert(spotlight.includes('First patient to review')&&spotlight.includes(expectedFirst),'Spotlight identity must come from the dynamically sorted first patient');
+assert(spotlight.includes('Needs review now')&&spotlight.includes('spotlight-warning-icon')&&spotlight.includes(expectedFirst),'Warning badge and spotlight identity must follow the dynamically sorted first patient');
 assert.equal((directoryMarkup.match(/class="priority-row"/g)||[]).length,2,'Only the non-spotlight patients belong in the secondary list');
 assert(spotlight.includes('class="spotlight-metric trend-bad" role="img" aria-label="Unfavorable decrease in accepted FEV1.'),'Falling accepted FEV1 must use the unfavorable/red state');
 const improvingFixture=reviewFixture.map((day,i)=>i>=7?{...day,symptoms:[],readings:[{fev:3.1+(i-7)*.05,quality:'accepted'}]}:day);
