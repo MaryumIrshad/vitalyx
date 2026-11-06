@@ -1,0 +1,155 @@
+{
+  "patientId": "FICTIONAL-POC-001",
+  "fictionalAgeYears": 16,
+  "dailyLogs": [
+    {
+      "date": "2026-10-01",
+      "trackerResponses": [
+        {
+          "submissionId": "SUB-FIC-001-20261001-01",
+          "trackerId": "tracker-asthma-demo",
+          "submittedAt": "2026-10-01T08:12:00-04:00",
+          "responses": [
+            { "questionId": "q-feeling", "value": "Bad" },
+            { "questionId": "q-symptoms", "value": "[\"Coughing\"]" },
+            { "questionId": "q-school-days", "value": "1" },
+            { "questionId": "q-fev1-reading", "value": "2.48" }
+          ]
+        },
+        {
+          "submissionId": "SUB-FIC-001-20261001-02",
+          "trackerId": "tracker-asthma-demo",
+          "submittedAt": "2026-10-01T19:06:00-04:00",
+          "responses": [
+            { "questionId": "q-feeling", "value": "Okay" },
+            { "questionId": "q-symptoms", "value": "[\"Wheezing\"]" },
+            { "questionId": "q-school-days", "value": "" }
+          ]
+        }
+      ],
+      "medicationAdministrations": [
+        {
+          "administrationId": "ADM-FIC-001-001",
+          "medicationId": "MED-RANDOM-CTRL-7KQ2",
+          "reportedAt": "2026-10-01T08:00:00-04:00",
+          "value": "1",
+          "doseSlot": "morning",
+          "source": "patientSelfReport"
+        },
+        {
+          "administrationId": "ADM-FIC-001-002",
+          "medicationId": "MED-RANDOM-RESC-9M4P",
+          "reportedAt": "2026-10-01T17:25:00-04:00",
+          "value": "1",
+          "doseSlot": null,
+          "source": "patientSelfReport"
+        }
+      ],
+      "reportedActionPlanZone": "Yellow"
+    },
+    {
+      "date": "2026-10-02",
+      "trackerResponses": [],
+      "medicationAdministrations": [
+        {
+          "administrationId": "ADM-FIC-001-003",
+          "medicationId": "MED-RANDOM-CTRL-7KQ2",
+          "reportedAt": "2026-10-02T08:04:00-04:00",
+          "value": "1",
+          "doseSlot": "morning",
+          "source": "patientSelfReport"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-03",
+      "trackerResponses": [
+        {
+          "submissionId": "SUB-FIC-001-20261003-01",
+          "trackerId": "tracker-asthma-demo",
+          "submittedAt": "2026-10-03T20:15:00-04:00",
+          "responses": [
+            { "questionId": "q-feeling", "value": "Great" },
+            { "questionId": "q-symptoms", "value": "[\"None of these\"]" },
+            { "questionId": "q-school-days", "value": "0" }
+          ]
+        }
+      ],
+      "medicationAdministrations": []
+    },
+    {
+      "date": "2026-10-04",
+      "trackerResponses": [],
+      "medicationAdministrations": []
+    }
+  ],
+  "medications": [
+    {
+      "medicationId": "MED-RANDOM-CTRL-7KQ2",
+      "name": "Fictional controller inhaler",
+      "category": "controller",
+      "active": true
+    },
+    {
+      "medicationId": "MED-RANDOM-RESC-9M4P",
+      "name": "Fictional rescue inhaler",
+      "category": "rescue",
+      "active": true
+    }
+  ],
+  "reminders": [
+    { "reminderId": "REM-FIC-001-01", "medicationId": "MED-RANDOM-CTRL-7KQ2", "time": "08:00" }
+  ],
+  "medicalDevices": [
+    {
+      "deviceId": "DEVICE-FIC-SPIRO-01",
+      "deviceName": "Fictional home spirometer",
+      "kind": "HomeSpirometer",
+      "baselineReadings": [
+        {
+          "readingId": "SPIRO-FIC-001-01",
+          "measuredAt": "2026-10-01T07:55:00-04:00",
+          "fev1_L": "2.48",
+          "accepted": true,
+          "qualityStatus": "Acceptable"
+        },
+        {
+          "readingId": "SPIRO-FIC-001-02",
+          "measuredAt": "2026-10-01T07:57:00-04:00",
+          "fev1_L": "2.91",
+          "accepted": false,
+          "qualityStatus": "NotAcceptable"
+        },
+        {
+          "readingId": "SPIRO-FIC-001-03",
+          "measuredAt": "2026-10-03T20:10:00-04:00",
+          "fev1_L": "2.60",
+          "accepted": true,
+          "qualityStatus": "Acceptable"
+        },
+        {
+          "readingId": "SPIRO-FIC-001-04",
+          "measuredAt": "2026-10-03T20:12:00-04:00",
+          "fev1_L": "2.57",
+          "accepted": true,
+          "qualityStatus": "Acceptable",
+          "qualityConflict": true
+        }
+      ],
+      "qualityReports": [
+        { "qualityReportId": "QR-FIC-001-01", "readingId": "SPIRO-FIC-001-01", "qualityStatus": "Acceptable", "instruction": "GoodEffort" },
+        { "qualityReportId": "QR-FIC-001-02", "readingId": "SPIRO-FIC-001-02", "qualityStatus": "NotAcceptable", "instruction": "RepeatAfterRest" },
+        { "qualityReportId": "QR-FIC-001-03A", "readingId": "SPIRO-FIC-001-03", "qualityStatus": "Acceptable", "instruction": "GoodEffort" },
+        { "qualityReportId": "QR-FIC-001-03B", "readingId": "SPIRO-FIC-001-03", "qualityStatus": "NotAcceptable", "instruction": "CheckSeal" },
+        { "qualityReportId": "QR-FIC-001-04", "readingId": "SPIRO-FIC-001-04", "qualityStatus": "Acceptable", "instruction": "ReviewQualityConflict" }
+      ]
+    }
+  ],
+  "asthmaTreatmentPlan": {
+    "status": "Active",
+    "expiresAt": "2027-02-01",
+    "retestAt": "2026-11-10"
+  },
+  "earnedMedicationBadges": [],
+  "earnedTrackerBadges": []
+}
